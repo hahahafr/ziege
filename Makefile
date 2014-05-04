@@ -9,9 +9,11 @@ LDFLAGS=
 all: ziege
 
 ziege: main.o
+	mkdir -p $(BINDIR)
 	$(CC) $(LDFLAGS) $(OBJDIR)/$< -o $(BINDIR)/$@
 
 %.o: $(SRCDIR)/%.c
+	mkdir -p $(OBJDIR)
 	$(CC) $(CFLAGS) $< -o $(OBJDIR)/$@
 
 .PHONY=clean
