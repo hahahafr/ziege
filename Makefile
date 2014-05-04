@@ -14,7 +14,7 @@ ziege: main.o
 %.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) $< -o $(OBJDIR)/$@
 
-.PHONY = clean
+.PHONY=clean
 
 clean:
 	rm -rf $(BINDIR)/*
