@@ -1,8 +1,16 @@
 #include <stdio.h>
+#include <ncurses.h>
 
-int
-main(int argc, char **argv)
-{
-   printf("Hello world!\n");
-   return 0;
+#include "main.h"
+#include "ui.h"
+
+int main(int argc, char **argv)
+{   
+
+    jeux_s jeu;
+
+    init_affichage(jeu);
+    maj_affichage(jeu);
+
+    return 0;
 }

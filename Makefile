@@ -1,16 +1,19 @@
 SRCDIR=src
 BINDIR=bin
 OBJDIR=obj
+LIBDIR=lib
+
+LIBS=$(LIBDIR)/libncurses.a $(LIBDIR)/libtinfo.a
 
 CC=gcc
 CFLAGS=-c -Wall -pedantic -std=c99 -I$(SRCDIR)
-LDFLAGS=
+LDFLAGS=-static
 
 all: ziege
 
-ziege: main.o
+ziege: main.o ui.o
 	mkdir -p $(BINDIR)
-	$(CC) $(LDFLAGS) $(OBJDIR)/$< -o $(BINDIR)/$@
+	$(CC) $(LDFLAGS) $(OBJDIR)/main.o $(OBJDIR)/ui.o -o $(BINDIR)/$@ $(LIBS)
 
 %.o: $(SRCDIR)/%.c
 	mkdir -p $(OBJDIR)
