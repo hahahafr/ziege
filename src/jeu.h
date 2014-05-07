@@ -36,5 +36,11 @@ Mis à jour du plateau en conséquence du coup joué
 */
 int maj_plateau(jeu_s j, coup_s c);
 
+/*test des déplacement des tigres*/
+void deplacement_tigre(jeu_s * j);
+
+/*Mise a jour des score*/
+void maj_score(jeu_s j);
+
 
 #endif

@@ -7,8 +7,13 @@ typedef struct et_case {
     int pion;
 }t_case;
 
+/*Structure représentant le plateau
+sup_pion est un champs qui prend la position d'un pion affecté par le déplacement d'un autre pions
+    - par defaut sup_pion[0] = sup_pion[1] = VIDE
+*/
 typedef struct et_plateau{
     t_case grille[PLATEAU_HAUTEUR][PLATEAU_LARGEUR];
+    int sup_pion[2];
 }t_plateau;
 
 /*destination 1 -> abs , destination 0 ->ord*/

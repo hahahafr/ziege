@@ -22,8 +22,11 @@ bool test_deplacement(coup_s c);
 /*test si ça correspon à un deplacement de tigre qui mange un chèvre*/
 bool test_deplacement_tigre(jeu_s j,coup_s c);
 
-/*Retourne vrai ou faux selon si la case est vide on non*/
-bool est_vide(plateau p, coup_s c);
+/*Retourne vrai ou faux selon si la case de destination est vide on non*/
+bool est_vide_destination(plateau p, coup_s c);
+
+/*Retourne vrai ou faux selon si la case de source est vide on non*/
+bool est_vide_source(plateau p, coup_s c);
 
 /*Retour la valeur du pion présent à la source du coup*/
 int get_pion(plateau p, int ord, int abs);
@@ -50,6 +53,9 @@ bool tigre_immobile(jeu_s j);
         - false , sinon
 */
 bool deplacement_possible(plateau p, t_tigre t);
+
+/*Fonction de test pour savoir si le score se met bien à jour */
+bool test_deplacement_possible(plateau p, t_tigre t);
 
 #endif
 
