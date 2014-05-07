@@ -1,33 +1,34 @@
 #ifndef JEU_H
 #define JEU_H
 
+#include "config.h"
+#include "struct_jeu.h"
 
+void init_jeu(jeu_s * j);
+void init_player(jeu_s j);
 
+int jouer(jeu_s j);
 
-#include "plateau.h"
-#include "logique.h"
-#include "partie.h"
+/*
+    retourne ;
+        - true, si la fin de la partie est atteinte
+        - false sinon
+*/
+bool is_end(jeu_s j);
 
-typedef struct et_joueur{
-    char nom[TAILLE_NOM];
-    int role;
-    int score;
-}t_joueur;
+/*
+    retourne ;
+        - l'adresse d'un coup jouer par  l'un des joueurs
+*/
+coup_s saisi_action(jeu_s j);
 
-typedef t_joueur * joueur;
+/*
+    fontion appelant le module dde logique pour vérifier la validité d'un coup jouer
+    retourne :
+        - true, dans le cas ou le coup est valide
+        - false, dans ce cas resaisi du coup
+*/
+bool traitement_action(jeu_s j, coup_s c);
 
-typedef struct et_jeu {
-    plateau p;
-    joueur participant;
-    partie g;
-    int prochain_joueur;
-}t_jeu;
-
-typedef t_jeu * jeu;
-
-void init_jeu(jeu * j);
-void init_player(jeu j);
-
-int jouer(jeu j);
 
 #endif

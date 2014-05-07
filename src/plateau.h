@@ -1,8 +1,7 @@
 #ifndef PLATEAU_H
 #define PLATEAU_H
 
-#include <stdio.h>
-#include <stdlib.h>
+#include "config.h"
 
 typedef struct et_case {
     int pion;
@@ -12,17 +11,26 @@ typedef struct et_plateau{
     t_case grille[PLATEAU_HAUTEUR][PLATEAU_LARGEUR];
 }t_plateau;
 
-typedef struct et_coups {
+/*destination 1 -> abs , destination 0 ->ord*/
+typedef struct et_coup_s {
     int destination[2];
     int source[2];
     int type;
-}t_coups;
+}t_coup_s;
 
-typedef t_coups * coups;
+typedef t_coup_s * coup_s;
 
 
 typedef t_plateau * plateau;
 
 void init_plateau(plateau * plateau);
-int ajouter_pion(plateau p,coups c);
+
+/*
+retourne :
+    - 0, tout vas bien
+    - -1 , placement dans une case deja occupé
+    - -2 , pion inexistant, deplacement impossible
+*/
+int action_pion(plateau p,coup_s c);
+
 #endif

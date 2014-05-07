@@ -6,4 +6,9 @@ void init_partie(partie * g){
     (*g)->phase = PHASE_PLACEMENT;
     (*g)->nb_tigre = NB_MAX_TIGRE;
     (*g)->nb_chevre = 0;
+    (*g)->joueur = CHEVRE;
+}
+
+void tour_suivant(partie g){
+    g->joueur = (g->joueur +1)% 2 ;
 }
