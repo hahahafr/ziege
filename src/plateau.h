@@ -26,10 +26,10 @@ typedef t_plateau * plateau;
 void init_plateau(plateau * plateau);
 
 /*
+Fonction qui permert d'interagir avec les element sur le plateau
 retourne :
     - 0, tout vas bien
-    - -1 , placement dans une case deja occupé
-    - -2 , pion inexistant, deplacement impossible
+    - -1 , Erreur
 */
 int action_pion(plateau p,coup_s c);
 

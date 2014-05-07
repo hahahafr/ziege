@@ -2,6 +2,11 @@
 
 bool validite_coup(jeu_s j,coup_s c){
 
+    if(j->g->joueur != c->type){
+        printf("Vous avez essaye de deplace un pion de l equipe adverse!\n");
+        return(false);
+    }
+
     if( !test_limite(c) ){
         printf("Coup hors limite !\n");
         return(false);
@@ -34,8 +39,6 @@ bool validite_coup(jeu_s j,coup_s c){
             printf("Deplacement des chevres impossible tant qu'elles ne sont pas toute posées!\n");
             return(false);
         }
-
-
 
         return(true);
     }
@@ -153,4 +156,43 @@ bool est_vide(plateau p, coup_s c){
 
 int get_pion(plateau p, int ord, int abs){
     return(p->grille[ord][abs].pion);
+}
+
+bool tigre_immobile(jeu_s j){
+    bool immo = true;
+    int i=0;
+
+    while(immo == true && i<NB_MAX_TIGRE){
+        if(deplacement_possible(j->p, j->g->t[i]))
+            immo = false;
+
+       i++;
+    }
+
+
+
+    return(immo);
+}
+
+bool deplacement_possible(plateau p, t_tigre t){
+    int i,j;
+    bool possible = false;
+
+    i = t.position[ORD] - 2;
+    j = t.position[ABS] - 2;
+
+    while( i < i + 4 && possible == false ){
+        while(j < j +4 && possible == false ){
+            if(p->grille[i][j].pion == VIDE){
+                possible = true;
+            }else{
+                j++;
+            }
+        }
+
+        if(possible = false)
+            i++;
+    }
+
+    return(possible);
 }

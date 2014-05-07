@@ -10,6 +10,7 @@ void init_player(jeu_s j);
 int jouer(jeu_s j);
 
 /*
+test si tout les chèvre on été mangé ou que tout les tigres soient bloqués
     retourne ;
         - true, si la fin de la partie est atteinte
         - false sinon
@@ -29,6 +30,11 @@ coup_s saisi_action(jeu_s j);
         - false, dans ce cas resaisi du coup
 */
 bool traitement_action(jeu_s j, coup_s c);
+
+/*
+Mis à jour du plateau en conséquence du coup joué
+*/
+int maj_plateau(jeu_s j, coup_s c);
 
 
 #endif

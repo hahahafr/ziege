@@ -36,7 +36,20 @@ Test du deplacement immobile
 */
 bool test_immobile(coup_s c);
 
+/*test si tout les tigres ont été emprisonné de manière itérative sur tout les tigres, et pour
+chacun d'eux si des deplacement sont disponnible
+    retourne :
+        - true , si tout les tigres son coincés
+        - false , sinon
+*/
+bool tigre_immobile(jeu_s j);
 
+/*test si un tigre est bloqué par rapport à son environnement
+    retourne:
+        - true , si un deplacement est possible
+        - false , sinon
+*/
+bool deplacement_possible(plateau p, t_tigre t);
 
 #endif
 

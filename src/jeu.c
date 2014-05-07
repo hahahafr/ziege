@@ -1,10 +1,12 @@
-#include "logique.h"
+#include "jeu.h"
 
 void init_jeu(jeu_s * j){
     *j = (jeu_s)malloc(sizeof(t_jeu));
 
     init_plateau(&((*j)->p));
     init_player(*j);
+    init_partie(&((*j)->g));
+    init_tigres(*j);
 
 }
 
@@ -31,19 +33,21 @@ int jouer(jeu_s j){
     /*boucle infini qui fait jouer les joueurs tours par tours*/
     coup_s c;
     while(is_end(j)){
-//        c = saisi_action(j);
-//        if(traiement_action(j,c)){
-//            action_pion(c);
-//            tour_suivant(j->g);
-//        }
+        c = saisi_action(j);
+        if(traitement_action(j,c)){
+            maj_plateau(j,c);
+            tour_suivant(j->g);
+        }
 
     }
     return(0);
 }
 
 bool is_end(jeu_s j){
-    /*doit faire appel au module logique*/
-    return(true);
+    if(j->g->nb_chevre == 0 && tigre_immobile(j)){
+        return(true);
+    }
+    return(false);
 }
 
 coup_s saisi_action(jeu_s j){
@@ -56,10 +60,9 @@ coup_s saisi_action(jeu_s j){
 }
 
 bool traitement_action(jeu_s j, coup_s c){
-    //appel au module du logique
-    if(true){
-        return(true);
-    }else{
-        return(false);
-    }
+    return(validite_coup(j,c));
+}
+
+int maj_plateau(jeu_s j, coup_s c){
+    return(action_pion(j,c));
 }
