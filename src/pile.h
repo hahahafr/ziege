@@ -3,9 +3,12 @@
 
 #include "struct_jeu.h"
 
-
 typedef jeu_s Element;
 
+typedef struct Cell {
+	Element elem;
+	struct Cell * suivant;
+}T_Cell;
 
 typedef struct Cell * Pile;
 

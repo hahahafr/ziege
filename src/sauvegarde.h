@@ -14,7 +14,7 @@ typedef t_sauvegarde * sauvegarde;
 
 void init_sauvegarde(sauvegarde * s);
 
-void ajout_sauvegarde(jeu_s j,sauvegarde s);
+void ajout_historique(jeu_s j,sauvegarde s);
 
 jeu_s revenir_arriere(jeu_s * j,sauvegarde s);
 

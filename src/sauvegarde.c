@@ -1,11 +1,12 @@
 #include "sauvegarde.h"
 
 void init_sauvegarde(sauvegarde * s){
+
     *s = (sauvegarde)malloc(sizeof(t_sauvegarde));
 
-    INIT_PILE(&((*s)->historique));
-
     strcpy ((*s)->file,"save.txt");
+
+    INIT_PILE(&((*s)->historique));
 }
 
 void ajout_historique(jeu_s j,sauvegarde s){
@@ -32,7 +33,6 @@ void ajout_historique(jeu_s j,sauvegarde s){
     for(int i=0;i<PLATEAU_HAUTEUR;i++)
         memcpy(tmp->p->grille[i],j->p->grille[i],sizeof(t_case)*PLATEAU_LARGEUR);
 
-
     //Copie des participants
     tmp->participant = (joueur)malloc(sizeof(t_joueur)*2);
 
@@ -43,8 +43,6 @@ void ajout_historique(jeu_s j,sauvegarde s){
 
 
     EMPILER(&(s->historique),tmp);
-
-    free(tmp);
 }
 
 jeu_s revenir_arriere(jeu_s * j,sauvegarde s){
@@ -61,7 +59,7 @@ void sauvegarde_fichier(jeu_s j,sauvegarde s){
 
     FILE * f;
 
-    f = fopen("save.txt","a");
+    f = fopen(s->file,"w+");
 
     if( f==NULL ){
         printf("Erreur dans l'ouverture du fichier de sauvegarde!\n");
@@ -70,11 +68,10 @@ void sauvegarde_fichier(jeu_s j,sauvegarde s){
 
     //Ecriture du plateau
 
-    fprintf(f,"/board");
+    fprintf(f,"/board\n");
 
     for(int i=0;i<PLATEAU_HAUTEUR;i++){
-        fprintf(f,"\n");
-        for(int k=0;j<PLATEAU_LARGEUR;j++){
+        for(int k=0;k<PLATEAU_LARGEUR;k++){
             if( j->p->grille[i][k].pion == -1 )
                 fprintf(f,".");
 
@@ -84,6 +81,7 @@ void sauvegarde_fichier(jeu_s j,sauvegarde s){
             if( j->p->grille[i][k].pion == 1 )
                 fprintf(f,"T");
         }
+        fprintf(f,"\n");
     }
 
     //Ecriture du joueur
@@ -103,8 +101,7 @@ void sauvegarde_fichier(jeu_s j,sauvegarde s){
 }
 
 int chargement_fichier(jeu_s j,sauvegarde s){
-    char  buffer[100];
-    char player[] = "/player ", phase[] = "/phase ",capture[] = "/captured ";
+    char  buffer[100],*capture;
     bool trouve = false;
     int h=0;
     FILE * f;
@@ -117,15 +114,15 @@ int chargement_fichier(jeu_s j,sauvegarde s){
     }
 
     //Ecriture du plateau
-    fread(buffer,sizeof(char),strlen("/board\n"),f);
+    fgets(buffer,100,f);
 
-    if( strcpy(buffer,"/board\n" ) != 0){
+    if( strcmp(buffer,"/board\n" ) != 0){
         return(-1);
     }
 
     for(int i=0;i<PLATEAU_HAUTEUR;i++){
-        fread(buffer,sizeof(char),PLATEAU_LARGEUR,f);
-        for(int k=0;j<PLATEAU_LARGEUR;j++){
+        fgets(buffer,100,f);
+        for(int k=0;k<PLATEAU_LARGEUR;k++){
             trouve = false;
 
             if( buffer[h] == '.' ){
@@ -149,59 +146,37 @@ int chargement_fichier(jeu_s j,sauvegarde s){
     }
 
     //Chargement du joueur
-    fread(buffer,sizeof(char),player,f);
+    fgets(buffer,100,f);
 
-    if( strcmp(buffer,player) != 0 ){
+    if( strcmp(buffer,"/player G\n\0") != 0 && strcmp(buffer,"/player T\n\0") != 0 ){
+        printf("player\n");
         return(-1);
     }
 
-    fread(buffer,sizeof(char),strlen("g\n"),f);
-
-    if( buffer[0] != 'G' && buffer[0] != 'T')
-        return(-1);
-
-    if(  'G' == buffer[0] )
-        j->g->joueur = CHEVRE;
-
-    if(  'T' == buffer[0] )
-        j->g->joueur = CHEVRE;
+    j->g->joueur = buffer[strlen(buffer)-2];
 
     //Chargement de la phase
 
-    fread(buffer,sizeof(char),phase,f);
+    fgets(buffer,100,f);
 
-    if( strcmp(buffer,phase) != 0 ){
+    if( strcmp(buffer,"/phase 0\n\0") != 0 && strcmp(buffer,"/phase 1\n\0") != 0){
+        printf("phase\n");
         return(-1);
     }
-
-    fread(buffer,sizeof(char),strlen("g\n"),f);
-
-    if( buffer[0] != 0 && buffer[0] != 1)
-        return(-1);
-
-    j->g->phase = buffer[0];
 
     //Chargement du nombre de chèvre capturée
 
-    fread(buffer,sizeof(char),phase,f);
+    fgets(buffer,100,f);
 
-    if( strcmp(buffer,capture) != 0 ){
+    capture = &(buffer[strlen("/captured ")]);
+
+    if( j->participant[TIGRE].score = atoi(capture) == -1){
         return(-1);
-    }
-
-    fread(buffer,sizeof(char),2,f);
-
-    if( !isdigit(buffer[0]) )
-        return(-1);
-
-    j->participant[TIGRE].score = 0;
-
-    for(int i=0;i<2;i++){
-        if( !isdigit(buffer[i]) )
-            j->participant[TIGRE].score = j->participant[TIGRE].score * 10 + buffer[i];
     }
 
     fclose(f);
+
+    return(0);
 
 }
 

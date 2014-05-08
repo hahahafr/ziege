@@ -1,0 +1,9 @@
+/board
+TGG.T
+GG...
+G.G..
+.....
+T...T
+/player G
+/phase 0
+/captured 0

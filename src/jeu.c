@@ -194,3 +194,95 @@ void test_score(jeu_s * j){
 
 
 }
+
+void test_historique(jeu_s *j,sauvegarde * s){
+
+    *j = (jeu_s)malloc(sizeof(t_jeu));
+
+    init_plateau(&((*j)->p));
+    init_partie(*j);
+    init_tigres(*j);
+    init_sauvegarde(*s);
+
+    (*j)->participant = (joueur)malloc(sizeof(t_joueur)*2);
+
+    (*j)->participant[CHEVRE].score = 0;
+    (*j)->participant[TIGRE].score = 0;
+
+    (*j)->participant[CHEVRE].score = 0;
+    (*j)->participant[TIGRE].score = 0;
+
+    (*j)->p->grille[0][0].pion = TIGRE;
+
+    (*j)->p->grille[1][1].pion = CHEVRE;
+    (*j)->p->grille[2][2].pion = CHEVRE;
+
+    (*j)->p->grille[0][1].pion = CHEVRE;
+    (*j)->p->grille[0][2].pion = CHEVRE;
+
+    (*j)->p->grille[1][0].pion = CHEVRE;
+    (*j)->p->grille[2][0].pion = CHEVRE;
+
+    maj_score(*j);
+
+    ajout_historique(*j,*s);
+
+    printf("Destruction du plateau\n");
+
+    init_plateau(&((*j)->p));
+
+    *j = revenir_arriere(*j,*s);
+
+    printf("case 0 0 : %d\n",(*j)->p->grille[0][0].pion);
+
+}
+
+void test_fichier(jeu_s * j,sauvegarde *s){
+    *j = (jeu_s)malloc(sizeof(t_jeu));
+
+    init_plateau(&((*j)->p));
+    init_partie(*j);
+    init_tigres(*j);
+    init_sauvegarde(s);
+
+    (*j)->participant = (joueur)malloc(sizeof(t_joueur)*2);
+
+    (*j)->participant[CHEVRE].score = 0;
+    (*j)->participant[TIGRE].score = 0;
+
+    (*j)->participant[CHEVRE].score = 0;
+    (*j)->participant[TIGRE].score = 0;
+
+    (*j)->p->grille[0][0].pion = TIGRE;
+
+    (*j)->p->grille[1][1].pion = CHEVRE;
+    (*j)->p->grille[2][2].pion = CHEVRE;
+
+    (*j)->p->grille[0][1].pion = CHEVRE;
+    (*j)->p->grille[0][2].pion = CHEVRE;
+
+    (*j)->p->grille[1][0].pion = CHEVRE;
+    (*j)->p->grille[2][0].pion = CHEVRE;
+
+    maj_score(*j);
+    sauvegarde_fichier(*j,*s);
+
+    printf("Sauvegarde effectuee !\n");
+
+    printf("Reset du jeu\n");
+
+    free(*j);
+
+    *j = (jeu_s)malloc(sizeof(t_jeu));
+
+    init_sauvegarde(*s);
+    init_plateau(&((*j)->p));
+
+    if( chargement_fichier(*j,*s) == -1 )
+        printf("Erreur pendant le chargement, il se peut que la sauvegarde soit corrompu!\n");
+    else
+        printf("Chargement effectuee !\n");
+
+    printf("Affichage de la case 0 0 :\n");
+    printf("%d",(*j)->p->grille[0][0]);
+}

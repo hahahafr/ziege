@@ -3,11 +3,6 @@
 #include <stdbool.h>
 #include "pile.h"
 
-typedef struct Cell {
-	Element elem;
-	struct Cell * suivant;
-}T_Cell;
-
 void INIT_PILE(Pile * p){
 	*p=NULL;
 }

@@ -1,0 +1,59 @@
+# depslib dependency file v1.0
+1399485329 source:c:\users\romain\drive-manchado\google drive\licence\structure de donnee\projet-logiciel\plateau.c
+	"plateau.h"
+
+1399485052 c:\users\romain\drive-manchado\google drive\licence\structure de donnee\projet-logiciel\plateau.h
+	"config.h"
+
+1399557155 source:c:\users\romain\drive-manchado\google drive\licence\structure de donnee\projet-logiciel\main.c
+	"jeu.h"
+
+1399499148 source:c:\users\romain\drive-manchado\google drive\licence\structure de donnee\projet-logiciel\partie.c
+	"partie.h"
+
+1399495579 source:c:\users\romain\drive-manchado\google drive\licence\structure de donnee\projet-logiciel\logique.c
+	"logique.h"
+
+1399479285 c:\users\romain\drive-manchado\google drive\licence\structure de donnee\projet-logiciel\partie.h
+	"config.h"
+	"struct_jeu.h"
+
+1399494830 c:\users\romain\drive-manchado\google drive\licence\structure de donnee\projet-logiciel\logique.h
+	"config.h"
+	"struct_jeu.h"
+
+1399554196 c:\users\romain\drive-manchado\google drive\licence\structure de donnee\projet-logiciel\jeu.h
+	"config.h"
+	"struct_jeu.h"
+	"sauvegarde.h"
+
+1399557577 source:c:\users\romain\drive-manchado\google drive\licence\structure de donnee\projet-logiciel\jeu.c
+	"jeu.h"
+
+1399499521 c:\users\romain\drive-manchado\google drive\licence\structure de donnee\projet-logiciel\config.h
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+	<string.h>
+	<math.h>
+
+1399554174 c:\users\romain\drive-manchado\google drive\licence\structure de donnee\projet-logiciel\struct_jeu.h
+	"plateau.h"
+
+1399554922 source:c:\users\romain\drive-manchado\google drive\licence\structure de donnee\projet-logiciel\pile.c
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+	"pile.h"
+
+1399554964 c:\users\romain\drive-manchado\google drive\licence\structure de donnee\projet-logiciel\pile.h
+	"struct_jeu.h"
+
+1399559085 source:c:\users\romain\drive-manchado\google drive\licence\structure de donnee\projet-logiciel\sauvegarde.c
+	"sauvegarde.h"
+
+1399556748 c:\users\romain\drive-manchado\google drive\licence\structure de donnee\projet-logiciel\sauvegarde.h
+	"pile.h"
+	"struct_jeu.h"
+	"config.h"
+

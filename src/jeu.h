@@ -3,6 +3,7 @@
 
 #include "config.h"
 #include "struct_jeu.h"
+#include "sauvegarde.h"
 
 void init_jeu(jeu_s * j);
 void init_player(jeu_s j);
