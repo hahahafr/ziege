@@ -4,6 +4,7 @@ GG...
 G.G..
 .....
 T...T
+/endboard
 /player G
 /phase 0
 /captured 0

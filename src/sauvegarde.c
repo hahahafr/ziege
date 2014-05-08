@@ -83,6 +83,7 @@ void sauvegarde_fichier(jeu_s j,sauvegarde s){
         }
         fprintf(f,"\n");
     }
+    fprintf(f,"/endboard\n");
 
     //Ecriture du joueur
     if( j->g->joueur == 1 )
@@ -143,6 +144,12 @@ int chargement_fichier(jeu_s j,sauvegarde s){
             if( !trouve )
                 return(-1);
         }
+    }
+
+    fgets(buffer,100,f);
+    if( strcmp(buffer,"/endboard\n\0") != 0 ){
+        printf("player\n");
+        return(-1);
     }
 
     //Chargement du joueur
