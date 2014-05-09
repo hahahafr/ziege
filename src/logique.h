@@ -1,7 +1,6 @@
 #ifndef LOGIQUE_H
 #define LOGIQUE_H
 
-#include "config.h"
 #include "struct_jeu.h"
 
 /*Test si un coup est possible en tenant compte du plateau*/
@@ -23,13 +22,10 @@ bool test_deplacement(coup_s c);
 bool test_deplacement_tigre(jeu_s j,coup_s c);
 
 /*Retourne vrai ou faux selon si la case de destination est vide on non*/
-bool est_vide_destination(plateau p, coup_s c);
+bool est_vide_destination(jeu_s j, coup_s c);
 
 /*Retourne vrai ou faux selon si la case de source est vide on non*/
-bool est_vide_source(plateau p, coup_s c);
-
-/*Retour la valeur du pion présent à la source du coup*/
-int get_pion(plateau p, int ord, int abs);
+bool est_vide_source(jeu_s j, coup_s c);
 
 /*
 Test du deplacement immobile
@@ -47,15 +43,15 @@ chacun d'eux si des deplacement sont disponnible
 */
 bool tigre_immobile(jeu_s j);
 
+/*test si toutes les chèvres sont emprisonnées*/
+bool chevres_immobiles(jeu_s j);
+
 /*test si un tigre est bloqué par rapport à son environnement
     retourne:
         - true , si un deplacement est possible
         - false , sinon
 */
-bool deplacement_possible(plateau p, t_tigre t);
-
-/*Fonction de test pour savoir si le score se met bien à jour */
-bool test_deplacement_possible(plateau p, t_tigre t);
+bool test_deplacement_possible(jeu_s j, t_pion t);
 
 #endif
 

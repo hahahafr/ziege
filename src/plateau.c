@@ -12,11 +12,7 @@ void init_plateau(plateau * p){
     (*p)->sup_pion[ORD] = (*p)->sup_pion[ABS] = -1;
 }
 
-int action_pion(plateau p,coup_s c){
-
-    printf("source : %d %d\n",c->source[ORD],c->source[ABS]);
-
-    printf("destination : %d %d\n",c->destination[ORD],c->destination[ABS]);
+int maj_plateau(plateau p,coup_s c){
 
     if(c->source[ORD] == VIDE && c->source[ABS] == -1){
         //placement de chevre
@@ -30,7 +26,27 @@ int action_pion(plateau p,coup_s c){
     if( p->sup_pion[ORD] != -1 ){
         p->grille[p->sup_pion[ORD]][p->sup_pion[ABS]].pion = -1;
     }
-    return(0);
 
+    return(0);
+}
+
+int get_pion(plateau p, int ord,int abs){
+    return(p->grille[ord][abs].pion);
+}
+
+int get_supp_pion_ord(plateau p){
+    return(p->sup_pion[ORD]);
+}
+
+int get_supp_pion_abs(plateau p){
+    return(p->sup_pion[ABS]);
+}
+
+void set_supp_pion_ord(plateau p,int ord){
+    p->sup_pion[ORD] = ord;
+}
+
+void set_supp_pion_abs(plateau p,int abs){
+    p->sup_pion[ABS] = abs;
 }
 

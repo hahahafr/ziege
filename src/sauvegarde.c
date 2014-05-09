@@ -19,10 +19,10 @@ void ajout_historique(jeu_s j,sauvegarde s){
 
     memcpy(tmp->g,j->g,sizeof(t_partie));
 
-    tmp->g->t = (tigres)malloc(sizeof(t_tigre)*NB_MAX_TIGRE);
+    tmp->g->t = (tigres)malloc(sizeof(t_pion)*NB_MAX_TIGRE);
 
     for(int i=0;i<NB_MAX_TIGRE;i++)
-        memcpy(tmp->g->t,j->g->t,sizeof(t_tigre)*NB_MAX_TIGRE);
+        memcpy(tmp->g->t,j->g->t,sizeof(t_pion)*NB_MAX_TIGRE);
 
 
     //Copie du plateau
@@ -175,9 +175,9 @@ int chargement_fichier(jeu_s j,sauvegarde s){
 
     fgets(buffer,100,f);
 
-    capture = &(buffer[strlen("/captured ")]);
+    capture = &(buffer[strlen("/captured ")-1]);
 
-    if( j->participant[TIGRE].score = atoi(capture) == -1){
+    if( (j->participant[TIGRE].score = atoi(capture)) == -1){
         return(-1);
     }
 

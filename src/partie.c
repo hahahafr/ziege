@@ -1,39 +1,62 @@
 #include "partie.h"
 
-void init_partie(jeu_s j){
-    j->g = (partie)malloc(sizeof(t_partie));
+void init_partie(partie * g){
+    (*g) = (partie)malloc(sizeof(t_partie));
 
-    j->g->phase = PHASE_PLACEMENT;
-    j->g->nb_tigre = NB_MAX_TIGRE;
-    j->g->nb_chevre = 0;
-    j->g->tour = 0;
-    j->g->joueur = CHEVRE;
+    (*g)->phase = PHASE_PLACEMENT;
+    (*g)->nb_tigre = NB_MAX_TIGRE;
+    (*g)->nb_chevre = 0;
+    (*g)->tour = 0;
+    (*g)->joueur = CHEVRE;
 
-    j->g->t = (tigres)malloc(sizeof(t_tigre)*NB_MAX_TIGRE);
+    (*g)->t = (tigres)malloc(sizeof(t_pion)*NB_MAX_TIGRE);
+
+    (*g)->c = (chevres)malloc(sizeof(t_pion)*NB_MAX_CHEVRE);
 }
 
-void init_tigres(jeu_s j){
+void maj_partie(partie g,coup_s c,int sup_pion[]){
 
-    //allocation du tableau de tigre
-    j->g->t[0].position[ORD] = 0;
-    j->g->t[0].position[ABS] = 0;
+    int i=0;
 
-    j->g->t[1].position[ORD] = 0;
-    j->g->t[1].position[ABS] = PLATEAU_LARGEUR-1;
+    /*cas ou le deplacement du tigre implique la capture d'un chevre -> mise à jour du tableau des chevres*/
+    if( c->type == TIGRE && sup_pion[ORD] != VIDE ){
 
-    j->g->t[2].position[ORD] = PLATEAU_HAUTEUR-1;
-    j->g->t[2].position[ABS] = 0;
+        while( sup_pion[ORD] != g->c[i].position[ORD] && sup_pion[ABS] != g->c[i].position[ABS] )
+            i++;
 
-    j->g->t[3].position[ORD] = PLATEAU_HAUTEUR-1;
-    j->g->t[3].position[ABS] = PLATEAU_LARGEUR-1;
+        g->c[i].position[ORD] = VIDE;
+        g->c[i].position[ABS] = VIDE;
+    }
 
-//    //mise en place des tigres
-    for(int i=0;i<NB_MAX_TIGRE;i++)
-//        printf("%d %d\n",j->g->t[i].position[ORD],j->g->t[i].position[ABS]);
-        j->p->grille[j->g->t[i].position[ORD]][j->g->t[i].position[ABS]].pion = TIGRE;
+    i=0;
+
+    /*mise à jour de la position des pions dans leur liste respective*/
+    if( c->type == TIGRE ){
+        while( c->source[ORD] != g->t[i].position[ORD] && c->source[ABS] != g->t[i].position[ABS] )
+            i++;
+
+        g->t[i].position[ORD] = c->destination[ORD];
+        g->t[i].position[ABS] = c->destination[ABS];
+    }
+
+    if( c->type == CHEVRE ){
+        while( c->source[ORD] != g->c[i].position[ORD] && c->source[ABS] != g->c[i].position[ABS] )
+            i++;
+
+        g->c[i].position[ORD] = c->destination[ORD];
+        g->c[i].position[ABS] = c->destination[ABS];
+
+    }
+
+    tour_suivant(g);
 }
 
 void tour_suivant(partie g){
+
+    if( g->joueur == CHEVRE )
+        g->nb_chevre++;
+
+
     g->joueur = (g->joueur +1)% 2 ;
     g->tour++;
 

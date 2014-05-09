@@ -1,3 +1,8 @@
+/******************************************************************/
+/*
+*MODULE DE PLATEAU
+*/
+/******************************************************************/
 #ifndef PLATEAU_H
 #define PLATEAU_H
 
@@ -16,16 +21,6 @@ typedef struct et_plateau{
     int sup_pion[2];
 }t_plateau;
 
-/*destination 1 -> abs , destination 0 ->ord*/
-typedef struct et_coup_s {
-    int destination[2];
-    int source[2];
-    int type;
-}t_coup_s;
-
-typedef t_coup_s * coup_s;
-
-
 typedef t_plateau * plateau;
 
 void init_plateau(plateau * plateau);
@@ -36,6 +31,19 @@ retourne :
     - 0, tout vas bien
     - -1 , Erreur
 */
-int action_pion(plateau p,coup_s c);
+
+/*Mis à jour du plateau en conséquence du coup joué*/
+int maj_plateau(plateau p,coup_s c);
+
+/*Retour la valeur du pion présent à la source du coup*/
+int get_pion(plateau p, int ord,int abs);
+
+int get_supp_pion_ord(plateau p);
+
+int get_supp_pion_abs(plateau p);
+
+void set_supp_pion_ord(plateau p,int ord);
+
+void set_supp_pion_abs(plateau p,int abs);
 
 #endif

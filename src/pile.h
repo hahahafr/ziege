@@ -1,9 +1,9 @@
 #ifndef def_pile_fonction
 #define def_pile_fonction
 
-#include "struct_jeu.h"
+#include "config.h"
 
-typedef jeu_s Element;
+typedef struct jeu_s * Element;
 
 typedef struct Cell {
 	Element elem;

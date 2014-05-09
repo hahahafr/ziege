@@ -2,8 +2,7 @@
 #define SAUVEGARDE_H
 
 #include "pile.h"
-#include "struct_jeu.h"
-#include "config.h"
+#include "jeu.h"
 
 typedef struct et_sauvegarde{
     Pile historique;

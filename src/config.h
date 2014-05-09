@@ -7,6 +7,8 @@
 #include <string.h>
 #include <math.h>
 
+//Taille d'un tableau de coordonnée
+#define TAILLE_POS 2
 //Taille max du nom d'un joueur
 #define TAILLE_NOM 20
 //Nombre max de tigre
@@ -32,5 +34,13 @@
 #define TIGRE 1
 #define VIDE -1
 
+/*destination 1 -> abs , destination 0 ->ord*/
+typedef struct et_coup_s {
+    int destination[2];
+    int source[2];
+    int type;
+}t_coup_s;
+
+typedef t_coup_s * coup_s;
 
 #endif

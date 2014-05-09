@@ -4,10 +4,37 @@ void init_jeu(jeu_s * j){
     *j = (jeu_s)malloc(sizeof(t_jeu));
 
     init_plateau(&((*j)->p));
-    init_player(*j);
-    init_partie(*j);
-    init_tigres(*j);
+    init_partie(&((*j)->g));
 
+    init_player(*j);
+    init_tigres(*j);
+    init_chevres(*j);
+
+}
+
+void init_chevres(jeu_s j){
+    for(int i=0;i<NB_MAX_CHEVRE;i++)
+        j->g->c[i].position[ORD] = j->g->c[i].position[ABS] = -1;
+}
+
+void init_tigres(jeu_s j){
+
+    //allocation du tableau de tigre
+    j->g->t[0].position[ORD] = 0;
+    j->g->t[0].position[ABS] = 0;
+
+    j->g->t[1].position[ORD] = 0;
+    j->g->t[1].position[ABS] = PLATEAU_LARGEUR-1;
+
+    j->g->t[2].position[ORD] = PLATEAU_HAUTEUR-1;
+    j->g->t[2].position[ABS] = 0;
+
+    j->g->t[3].position[ORD] = PLATEAU_HAUTEUR-1;
+    j->g->t[3].position[ABS] = PLATEAU_LARGEUR-1;
+
+//    //mise en place des tigres
+    for(int i=0;i<NB_MAX_TIGRE;i++)
+        j->p->grille[j->g->t[i].position[ORD]][j->g->t[i].position[ABS]].pion = TIGRE;
 }
 
 void init_player(jeu_s j){
@@ -46,8 +73,7 @@ int jouer(jeu_s j){
 
         c = saisi_action(j);
         if(traitement_action(j,c)){
-            maj_plateau(j,c);
-            maj_score(j);
+            maj_jeu(j,c);
             tour_suivant(j->g);
         }
         free(c);
@@ -57,7 +83,7 @@ int jouer(jeu_s j){
 }
 
 bool is_end(jeu_s j){
-    if(j->g->nb_chevre == 0 && tigre_immobile(j)  && j->g->phase == PHASE_DEPLACEMENT ){
+    if(j->participant[TIGRE].score == 7 ||  tigre_immobile(j) ){
         return(true);
     }
     return(false);
@@ -83,8 +109,6 @@ coup_s saisi_action(jeu_s j){
     printf("Veuillez saisir l'abscisse destination :\n");
     scanf("%d",&(c->destination[ABS]));
 
-
-
     //fonction interface utilisateur de saisie de coup
     return(c);
 }
@@ -93,196 +117,34 @@ bool traitement_action(jeu_s j, coup_s c){
     return(validite_coup(j,c));
 }
 
-int maj_plateau(jeu_s j, coup_s c){
-    return(action_pion(j->p,c));
+void maj_jeu(jeu_s j,coup_s c){
+        maj_plateau(j->p,c);
+        maj_partie(j,c,j->p->sup_pion);
+        maj_score(j);
 }
 
 void maj_score(jeu_s j){
-    int i;
+    maj_score_chevre(j);
+    maj_score_tigre(j);
+}
+
+void maj_score_chevre(jeu_s j){
+    j->participant[CHEVRE].score = 0;
+
+    for(int i=0;i<NB_MAX_TIGRE;i++){
+        if(!test_deplacement_possible(j,j->g->t[i])){
+            j->participant[CHEVRE].score++;
+        }
+    }
+}
+
+void maj_score_tigre(jeu_s j){
     if( j->p->sup_pion[ORD] != -1 ){
         //chevre prise
         j->participant[TIGRE].score++;
+
         j->p->sup_pion[ORD] = j->p->sup_pion[ABS] = -1;
     }
 
-        for(i=0;i<NB_MAX_TIGRE;i++){
-            if(!test_deplacement_possible(j->p,j->g->t[i])){
-                j->participant[CHEVRE].score++;
-            }
-        }
 }
 
-// fonction de test
-void deplacement_tigre(jeu_s * j){
-    coup_s c;
-
-    *j = (jeu_s)malloc(sizeof(t_jeu));
-
-    init_plateau(&((*j)->p));
-
-    (*j)->participant = (joueur)malloc(sizeof(t_joueur)*2);
-
-    (*j)->participant[CHEVRE].score = 0;
-    (*j)->participant[TIGRE].score = 0;
-
-    (*j)->p->grille[0][0].pion = TIGRE;
-
-    (*j)->p->grille[1][1].pion = CHEVRE;
-
-    (*j)->g = (partie)malloc(sizeof(t_partie));
-    (*j)->g->joueur = TIGRE;
-
-    while(true){
-
-        c = (coup_s)malloc(sizeof(t_coup_s));
-
-        c->type = TIGRE;
-
-        //fabrication d'un coup manuel
-        printf("Veuillez saisir l'ordonne source :\n");
-        scanf("%d",&(c->source[ORD]));
-
-        printf("Veuillez saisir l'abscisse source :\n");
-        scanf("%d",&(c->source[ABS]));
-
-        printf("Veuillez saisir l'ordonne destination :\n");
-        scanf("%d",&(c->destination[ORD]));
-
-        printf("Veuillez saisir l'abscisse destination :\n");
-        scanf("%d",&(c->destination[ABS]));
-
-        if(traitement_action(*j,c)){
-            maj_plateau(*j,c);
-            maj_score(*j);
-            tour_suivant((*j)->g);
-        }
-
-        printf("score tigre : %d\n",(*j)->participant[TIGRE].score);
-        printf("score chevre : %d \n",(*j)->participant[CHEVRE].score);
-    }
-
-}
-
-void test_score(jeu_s * j){
-    *j = (jeu_s)malloc(sizeof(t_jeu));
-
-    init_plateau(&((*j)->p));
-    init_partie(*j);
-    init_tigres(*j);
-
-    (*j)->participant = (joueur)malloc(sizeof(t_joueur)*2);
-
-    (*j)->participant[CHEVRE].score = 0;
-    (*j)->participant[TIGRE].score = 0;
-
-    (*j)->p->grille[0][0].pion = TIGRE;
-
-    (*j)->p->grille[1][1].pion = CHEVRE;
-    (*j)->p->grille[2][2].pion = CHEVRE;
-
-    (*j)->p->grille[0][1].pion = CHEVRE;
-    (*j)->p->grille[0][2].pion = CHEVRE;
-
-    (*j)->p->grille[1][0].pion = CHEVRE;
-    (*j)->p->grille[2][0].pion = CHEVRE;
-
-    maj_score(*j);
-
-    printf("score tigre : %d\n",(*j)->participant[TIGRE].score);
-    printf("score chevre : %d \n",(*j)->participant[CHEVRE].score);
-
-
-
-}
-
-void test_historique(jeu_s *j,sauvegarde * s){
-
-    *j = (jeu_s)malloc(sizeof(t_jeu));
-
-    init_plateau(&((*j)->p));
-    init_partie(*j);
-    init_tigres(*j);
-    init_sauvegarde(*s);
-
-    (*j)->participant = (joueur)malloc(sizeof(t_joueur)*2);
-
-    (*j)->participant[CHEVRE].score = 0;
-    (*j)->participant[TIGRE].score = 0;
-
-    (*j)->participant[CHEVRE].score = 0;
-    (*j)->participant[TIGRE].score = 0;
-
-    (*j)->p->grille[0][0].pion = TIGRE;
-
-    (*j)->p->grille[1][1].pion = CHEVRE;
-    (*j)->p->grille[2][2].pion = CHEVRE;
-
-    (*j)->p->grille[0][1].pion = CHEVRE;
-    (*j)->p->grille[0][2].pion = CHEVRE;
-
-    (*j)->p->grille[1][0].pion = CHEVRE;
-    (*j)->p->grille[2][0].pion = CHEVRE;
-
-    maj_score(*j);
-
-    ajout_historique(*j,*s);
-
-    printf("Destruction du plateau\n");
-
-    init_plateau(&((*j)->p));
-
-    *j = revenir_arriere(*j,*s);
-
-    printf("case 0 0 : %d\n",(*j)->p->grille[0][0].pion);
-
-}
-
-void test_fichier(jeu_s * j,sauvegarde *s){
-    *j = (jeu_s)malloc(sizeof(t_jeu));
-
-    init_plateau(&((*j)->p));
-    init_partie(*j);
-    init_tigres(*j);
-    init_sauvegarde(s);
-
-    (*j)->participant = (joueur)malloc(sizeof(t_joueur)*2);
-
-    (*j)->participant[CHEVRE].score = 0;
-    (*j)->participant[TIGRE].score = 0;
-
-    (*j)->participant[CHEVRE].score = 0;
-    (*j)->participant[TIGRE].score = 0;
-
-    (*j)->p->grille[0][0].pion = TIGRE;
-
-    (*j)->p->grille[1][1].pion = CHEVRE;
-    (*j)->p->grille[2][2].pion = CHEVRE;
-
-    (*j)->p->grille[0][1].pion = CHEVRE;
-    (*j)->p->grille[0][2].pion = CHEVRE;
-
-    (*j)->p->grille[1][0].pion = CHEVRE;
-    (*j)->p->grille[2][0].pion = CHEVRE;
-
-    maj_score(*j);
-    sauvegarde_fichier(*j,*s);
-
-    printf("Sauvegarde effectuee !\n");
-
-    printf("Reset du jeu\n");
-
-    free(*j);
-
-    *j = (jeu_s)malloc(sizeof(t_jeu));
-
-    init_sauvegarde(*s);
-    init_plateau(&((*j)->p));
-
-    if( chargement_fichier(*j,*s) == -1 )
-        printf("Erreur pendant le chargement, il se peut que la sauvegarde soit corrompu!\n");
-    else
-        printf("Chargement effectuee !\n");
-
-    printf("Affichage de la case 0 0 :\n");
-    printf("%d",(*j)->p->grille[0][0]);
-}
