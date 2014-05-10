@@ -3,21 +3,23 @@ BINDIR=bin
 OBJDIR=obj
 LIBDIR=lib
 
-LIBS=$(LIBDIR)/libncurses.a $(LIBDIR)/libtinfo.a
+LIBSPRE=libncurses.a libtinfo.a libgpm.a
+LIBSLINKER=$(LIBSPRE:%=$(LIBDIR)/%)
 SOURCES=main.c ui.c
-OBJECTS=$(SOURCES:%.o=%.c)
+OBJECTSPRE=$(SOURCES:%.c=%.o)
+OBJECTSLINKER=$(OBJECTSPRE:%=$(OBJDIR)/%)
 EXECUTABLE=ziege
 
 
 CC=gcc
-CFLAGS=-c -Wall -pedantic -std=c99 -I$(SRCDIR)
+CFLAGS=-c -Wall -std=c99 -I$(SRCDIR)
 LDFLAGS=-static
 
 all: ziege
 
 ziege: main.o ui.o
 	mkdir -p $(BINDIR)
-	$(CC) $(LDFLAGS) $(OBJDIR)/main.o $(OBJDIR)/ui.o -o $(BINDIR)/$@ $(LIBS)
+	$(CC) $(LDFLAGS) $(OBJECTSLINKER) -o $(BINDIR)/$@ $(LIBSLINKER)
 
 %.o: $(SRCDIR)/%.c
 	mkdir -p $(OBJDIR)
