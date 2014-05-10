@@ -4,15 +4,13 @@ int
 init_affichage(jeu_s jeu)
 {
 
-    int stdscry, stdscrx;
+    int screeny, screenx;
 
     initscr();
     noecho();
     cbreak();
 
-    getmaxyx(stdscr, stdscry, stdscrx);
-
-    WINDOW *plateau = newwin(29, 49, 0, 0);
+    WINDOW *plateau = newwin(49, 29, (screeny-49)/2, ((screenx-29)/2));
 
     printw(
 "+---+     +---+     +---+     +---+     +---+\n"
@@ -42,10 +40,16 @@ init_affichage(jeu_s jeu)
 "+---+     +---+     +---+     +---+     +---+\n"
 "|   |-----|   |-----|   |-----|   |-----|   |\n"
 "+---+     +---+     +---+     +---+     +---+\n");
+    
+    getmaxyx(stdscr, screeny, screenx);
+    
+    WINDOW *etat = newwin(20, screeny/2, 0, screenx-20);
+    WINDOW *cimetiere = newwin(20, screeny/2, screenx/2, screenx-20);
+    
     refresh();
-    getch();
+    
+    wgetch();
     endwin();
-
 
     return 0;
 }
@@ -56,3 +60,6 @@ int maj_affichage(jeu_s jeu)
 }
 
 void saisir_coups()
+{
+    return 0;
+}

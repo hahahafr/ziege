@@ -8,8 +8,45 @@ void init_plateau(plateau * p){
             (*p)->grille[i][j].pion = VIDE;
         }
     }
+
+    (*p)->sup_pion[ORD] = (*p)->sup_pion[ABS] = -1;
 }
 
-int ajouter_pion(plateau p,coups c){
+int maj_plateau(plateau p,coup_s c){
 
+    if(c->source[ORD] == VIDE && c->source[ABS] == -1){
+        //placement de chevre
+        p->grille[c->destination[ORD]][c->destination[ABS]].pion = c->type;
+        return(0);
+    }
+    p->grille[c->destination[ORD]][c->destination[ABS]].pion = p->grille[c->source[ORD]][c->source[ABS]].pion;
+
+    p->grille[c->source[ORD]][c->source[ABS]].pion = VIDE;
+
+    if( p->sup_pion[ORD] != -1 ){
+        p->grille[p->sup_pion[ORD]][p->sup_pion[ABS]].pion = -1;
+    }
+
+    return(0);
 }
+
+int get_pion(plateau p, int ord,int abs){
+    return(p->grille[ord][abs].pion);
+}
+
+int get_supp_pion_ord(plateau p){
+    return(p->sup_pion[ORD]);
+}
+
+int get_supp_pion_abs(plateau p){
+    return(p->sup_pion[ABS]);
+}
+
+void set_supp_pion_ord(plateau p,int ord){
+    p->sup_pion[ORD] = ord;
+}
+
+void set_supp_pion_abs(plateau p,int abs){
+    p->sup_pion[ABS] = abs;
+}
+

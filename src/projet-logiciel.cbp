@@ -47,10 +47,19 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="partie.h" />
+		<Unit filename="pile.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="pile.h" />
 		<Unit filename="plateau.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="plateau.h" />
+		<Unit filename="sauvegarde.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="sauvegarde.h" />
+		<Unit filename="struct_jeu.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />
