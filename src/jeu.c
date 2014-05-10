@@ -19,7 +19,6 @@ void init_chevres(jeu_s j){
 
 void init_tigres(jeu_s j){
 
-    //allocation du tableau de tigre
     j->g->t[0].position[ORD] = 0;
     j->g->t[0].position[ABS] = 0;
 
@@ -79,6 +78,7 @@ int jouer(jeu_s j){
         free(c);
         system("pause");
     }
+
     return(0);
 }
 
@@ -119,7 +119,7 @@ bool traitement_action(jeu_s j, coup_s c){
 
 void maj_jeu(jeu_s j,coup_s c){
         maj_plateau(j->p,c);
-        maj_partie(j,c,j->p->sup_pion);
+        maj_partie(j->g,c,j->p->sup_pion);
         maj_score(j);
 }
 

@@ -64,6 +64,17 @@ bool test_immobile(coup_s c){
     return( c->destination[ORD] == c->source[ORD] && c->destination[ABS] == c->source[ABS] );
 }
 
+bool hors_limite(int ord,int abs){
+    if(abs >= PLATEAU_LARGEUR || abs < 0)
+        return(true);
+
+    if(ord >= PLATEAU_HAUTEUR || ord < 0)
+        return(true);
+
+    return(false);
+
+}
+
 bool test_limite(coup_s c){
 
     if( c->source[ORD] != c->source[ABS] && ( c->source[ORD] == -1 || c->source[ABS] == -1 ) ){

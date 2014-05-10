@@ -21,8 +21,11 @@ void maj_partie(partie g,coup_s c,int sup_pion[]){
     /*cas ou le deplacement du tigre implique la capture d'un chevre -> mise à jour du tableau des chevres*/
     if( c->type == TIGRE && sup_pion[ORD] != VIDE ){
 
-        while( sup_pion[ORD] != g->c[i].position[ORD] && sup_pion[ABS] != g->c[i].position[ABS] )
+        while( ! ( sup_pion[ORD] == g->c[i].position[ORD] && sup_pion[ABS] == g->c[i].position[ABS] ) && i < CHEVRE )
             i++;
+
+        if( i >= NB_MAX_CHEVRE )
+            return;
 
         g->c[i].position[ORD] = VIDE;
         g->c[i].position[ABS] = VIDE;
@@ -32,19 +35,28 @@ void maj_partie(partie g,coup_s c,int sup_pion[]){
 
     /*mise à jour de la position des pions dans leur liste respective*/
     if( c->type == TIGRE ){
-        while( c->source[ORD] != g->t[i].position[ORD] && c->source[ABS] != g->t[i].position[ABS] )
+
+        while( ! ( c->source[ORD] == g->t[i].position[ORD] &&  c->source[ABS] == g->t[i].position[ABS] ) && i < NB_MAX_TIGRE )
             i++;
+
+        if( i >= NB_MAX_TIGRE )
+            return;
 
         g->t[i].position[ORD] = c->destination[ORD];
         g->t[i].position[ABS] = c->destination[ABS];
     }
 
     if( c->type == CHEVRE ){
-        while( c->source[ORD] != g->c[i].position[ORD] && c->source[ABS] != g->c[i].position[ABS] )
+        while( ! ( c->source[ORD] == g->c[i].position[ORD] &&  c->source[ABS] == g->c[i].position[ABS] ) && i < NB_MAX_CHEVRE )
             i++;
+
+        if( i >= NB_MAX_CHEVRE )
+            return;
 
         g->c[i].position[ORD] = c->destination[ORD];
         g->c[i].position[ABS] = c->destination[ABS];
+
+        g->nb_chevre++;
 
     }
 
@@ -52,10 +64,6 @@ void maj_partie(partie g,coup_s c,int sup_pion[]){
 }
 
 void tour_suivant(partie g){
-
-    if( g->joueur == CHEVRE )
-        g->nb_chevre++;
-
 
     g->joueur = (g->joueur +1)% 2 ;
     g->tour++;

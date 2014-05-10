@@ -15,6 +15,9 @@ bool test_diagonale(coup_s c);
 /*test si le coup n'est hors du plateau*/
 bool test_limite(coup_s c);
 
+/*test si des indice sont hors limite ou non du plateau*/
+bool hors_limite(int ord,int abs);
+
 /*test si ça correspond à un deplacement basique correct*/
 bool test_deplacement(coup_s c);
 
