@@ -205,15 +205,23 @@ init_affichage(jeu_s jeu, aff_s * aff)
     wrefresh(etat);
     wrefresh(cimetiere);
     wrefresh(plateau);
-
-    (* aff)->tabindcoord = malloc(25*sizeof(int*));
-    int tmp;
-    for(int i = 0; i < 24; i++)
+/*    int cpt = 0;*/
+    for(int i = 0; i < 5; i++)
     {
-        tmp = i/10;
-        (* aff)->tabindcoord[i]=malloc(2*sizeof(int));
-        (* aff)->tabindcoord[i][0]=plateau_orig_y;
-        (* aff)->tabindcoord[i][1]=plateau_orig_x;
+        for(int j = 0; j < 5; j++)
+        {
+            // i = y
+            // j = x
+            (* aff)->tabindcoord[i][j]=malloc(2*sizeof(int));
+            (* aff)->tabindcoord[i][j][ORD]=2+plateau_orig_y+(6*i);
+            (* aff)->tabindcoord[i][j][ABS]=4+plateau_orig_x+(10*j);
+
+/*            mvprintw(cpt,0,"(* aff)->tabindcoord: %d, (* aff)->tabindcoord[%d][%d]: %d, "
+              "(* aff)->tabindcoord[%d][%d][0]: %d, (* aff)->tabindcoord[%d][%d][1]: %d",
+              (* aff)->tabindcoord, i, j, (* aff)->tabindcoord[i][j], i, j, (* aff)->tabindcoord[i][j][0],
+              i, j, (* aff)->tabindcoord[i][j][1]);
+            cpt++;*/
+        }
     }
 
     return 0;
@@ -231,6 +239,7 @@ int coord_jeu_vers_aff(aff_s aff, int inx, int iny, int *outy, int *outx)
 
 int maj_affichage(jeu_s jeu, aff_s aff)   
 {
+    // itérerer sur la struscture jeu et se servir de coordjeu vers coordaffichage
     return 0;
 }
 
