@@ -4,6 +4,10 @@ OBJDIR=obj
 LIBDIR=lib
 
 LIBS=$(LIBDIR)/libncurses.a $(LIBDIR)/libtinfo.a
+SOURCES=main.c ui.c
+OBJECTS=$(SOURCES:%.o=%.c)
+EXECUTABLE=ziege
+
 
 CC=gcc
 CFLAGS=-c -Wall -pedantic -std=c99 -I$(SRCDIR)

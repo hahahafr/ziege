@@ -6,6 +6,6 @@
 typedef struct
 {
     int plateau[5][5];
-} jeux_s;
+} jeu_s;
 
 #endif
