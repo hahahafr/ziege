@@ -33,6 +33,8 @@
 
 coup_s choix_placement_chevre(jeu_s j);
 
+coup_s choix_deplacement_chevre(jeu_s j);
+
 int test_position_chevre(jeu_s j,coup_s c);
 
 coup_s choix_deplacement_tigre(jeu_s j);

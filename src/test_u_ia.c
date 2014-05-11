@@ -76,6 +76,40 @@ void test_ia_tigre(jeu_s *j){
 
 }
 
+void test_choix_deplacement_chevre(jeu_s * j){
+    coup_s c;
+    int sup_pion[] = {-1,-1};
+
+    *j = (jeu_s)malloc(sizeof(t_jeu));
+
+    init_plateau(&((*j)->p));
+    init_partie(&((*j)->g));
+    init_tigres(*j);
+    init_chevres(*j);
+
+    c = (coup_s)malloc(sizeof(t_coup_s));
+
+    c->type = CHEVRE;
+    c->source[ORD] = -1;
+    c->source[ABS] = -1;
+
+    c->destination[ORD] = 0;
+    c->destination[ABS] = 1;
+
+    printf("Tigres initialisés au 4 coins\n");
+
+    printf("chevre en 0 1  :%d %d\n",c->destination[ORD],c->destination[ABS]);
+
+    maj_plateau((*j)->p,c);
+    maj_partie((*j)->g,c,sup_pion);
+
+    c = choix_deplacement_chevre(*j,c);
+
+
+    printf("\ncoordonne  :%d %d\n",c->destination[ORD],c->destination[ABS]);
+}
+
+
 void test_coordonnee(){
     //coordonnée et opposé
     int ord = 2;
