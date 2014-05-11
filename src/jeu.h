@@ -58,4 +58,9 @@ void maj_score_chevre(jeu_s j);
 
 void maj_score_tigre(jeu_s j);
 
+int get_phase(jeu_s j);
+
+int get_joueur(jeu_s j);
+
+
 #endif
