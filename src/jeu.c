@@ -5,7 +5,6 @@ void init_jeu(jeu_s * j){
 
     init_plateau(&((*j)->p));
     init_partie(&((*j)->g));
-
     init_tigres(*j);
     init_chevres(*j);
 
@@ -124,3 +123,10 @@ void maj_score_tigre(jeu_s j){
 
 }
 
+int get_phase(jeu_s j){
+    return(get_parti_phase(j->p));
+}
+
+int get_joueur(jeu_s j){
+    return(get_parti_joueur(j->p));
+}
