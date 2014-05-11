@@ -44,7 +44,8 @@ void init_player(jeu_s j, int rj1){
     j->participant[CHEVRE].score = 0;
     j->participant[TIGRE].score = 0;
 
-    j->participant[role].role = 1 - j->participant[1-role].role;
+    j->participant[role].role = role;
+    j->participant[1-role].role = 1 - j->participant[role].role;
 }
 
 int jouer(jeu_s j,coup_s c){
@@ -59,7 +60,7 @@ int jouer(jeu_s j,coup_s c){
 }
 
 bool is_end(jeu_s j){
-    if(j->participant[TIGRE].score == 7 ||  tigre_immobile(j) || chevres_immobiles(j) ){
+    if(j->participant[TIGRE].score == 7 ||  tigre_immobile(j)){
         return(true);
     }
     return(false);
