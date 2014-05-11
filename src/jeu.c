@@ -76,14 +76,19 @@ void init_player_ai(jeu_s j, int rj1, int jai){
 
 int jouer(jeu_s j,coup_s c){
     /*boucle infini qui fait jouer les joueurs tours par tours*/
-    if(traitement_action(j,c)){
+
+    int res = 0;
+
+    res = traitement_action(j,c);
+
+    if( res == 0 ){
         maj_jeu(j,c);
         return(0);
     }else{
-        printf("nok\n");
+        printf("%s\n",error[0]);
     }
 
-    return(-1);
+    return(res);
 }
 
 coup_s choix_coup_ai(jeu_s jeu)
