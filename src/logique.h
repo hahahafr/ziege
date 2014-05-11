@@ -30,6 +30,8 @@ bool est_vide_destination(jeu_s j, coup_s c);
 /*Retourne vrai ou faux selon si la case de source est vide on non*/
 bool est_vide_source(jeu_s j, coup_s c);
 
+bool test_eat_chevre(jeu_s j, coup_s c);
+
 /*
 Test du deplacement immobile
     retournee :
