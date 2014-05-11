@@ -60,7 +60,7 @@ int jouer(jeu_s j,coup_s c){
 }
 
 bool is_end(jeu_s j){
-    if(j->participant[TIGRE].score == 7 ||  tigre_immobile(j)){
+    if( j->participant[TIGRE].score == 7 ){
         return(true);
     }
     return(false);
