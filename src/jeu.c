@@ -43,9 +43,36 @@ void init_player(jeu_s j, int rj1){
     j->participant[CHEVRE].score = 0;
     j->participant[TIGRE].score = 0;
 
+    j->participant[CHEVRE].is_ai = 0;
+    j->participant[TIGRE].is_ai = 0;
+
     j->participant[role].role = role;
     j->participant[1-role].role = 1 - j->participant[role].role;
 }
+
+void init_player_ai(jeu_s j, int rj1, int jai){
+
+    int role = rj1;
+
+    j->participant = (joueur)malloc(sizeof(t_joueur)*2);
+
+    j->participant[CHEVRE].score = 0;
+    j->participant[TIGRE].score = 0;
+
+    j->participant[role].role = role;
+    j->participant[1-role].role = 1 - j->participant[role].role;
+
+    if (rj1 == CHEVRE){
+        j->participant[CHEVRE].is_ai = 0;
+        j->participant[TIGRE].is_ai = 1;
+    }
+    else
+    {
+        j->participant[CHEVRE].is_ai = 1;
+        j->participant[TIGRE].is_ai = 0;
+    }
+}
+
 
 int jouer(jeu_s j,coup_s c){
     /*boucle infini qui fait jouer les joueurs tours par tours*/
@@ -59,7 +86,15 @@ int jouer(jeu_s j,coup_s c){
     return(-1);
 }
 
-
+coup_s choix_coup_ai(jeu_s jeu)
+{
+    if (get_phase(jeu) == PHASE_PLACEMENT && get_joueur(jeu) == CHEVRE)
+        return(choix_placement_chevre(jeu));
+    if (get_joueur(jeu) == TIGRE)
+        return(choix_deplacement_tigre(jeu));
+    if (get_phase(jeu) == PHASE_DEPLACEMENT && get_joueur(jeu) == CHEVRE)
+        return(choix_deplacement_chevre(jeu));
+}
 
 bool is_end(jeu_s j){
     if( j->participant[TIGRE].score == 7 ){

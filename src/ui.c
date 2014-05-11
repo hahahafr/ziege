@@ -382,7 +382,10 @@ void jouer_ui(jeu_s jeu, aff_s aff)
     while(!is_end(jeu))
     {
         maj_affichage(jeu, aff);
-        c = saisir_coups(jeu, aff);
+        if (jeu->participant[jeu->g->joueur].is_ai)
+            c = choix_coup_ai(jeu);
+        else
+            c = saisir_coups(jeu, aff);
         jouer(jeu, c);
     }
     
@@ -403,6 +406,7 @@ void init_player_ui(jeu_s jeu, aff_s aff)
     char nomj1[TAILLE_NOM];
     char nomj2[TAILLE_NOM];
     char rolej1;
+    char ai;
     int roleint;
 
     curs_set(1);
@@ -432,7 +436,30 @@ void init_player_ui(jeu_s jeu, aff_s aff)
     else
         roleint = 1;
 
-    init_player(jeu, roleint);
+
+    do {
+    wattron(aff->etat, A_BOLD | A_REVERSE);
+    mvwprintw(aff->etat, 1, 2, "Jouer contre l'AI ?");
+    mvwprintw(aff->etat, 2, 2, "0 pour NON, 1 pour OUI:");
+    wattroff(aff->etat, A_BOLD | A_REVERSE);
+    wattron(aff->etat, A_BOLD);
+    mvwscanw(aff->etat, 3, 2, "%c", &ai);
+    wrefresh(aff->etat);
+    wattroff(aff->etat, A_BOLD);
+
+    wmove(aff->etat, 1, 2);
+    wclrtoeol(aff->etat);
+    wmove(aff->etat, 2, 2);
+    wclrtoeol(aff->etat);
+    wmove(aff->etat, 3, 2);
+    wclrtoeol(aff->etat);
+    wrefresh(aff->etat);
+    } while ((ai != '0') && (ai) != '1');
+
+    if (ai == '0')
+        init_player(jeu, roleint);
+    else
+        init_player_ai(jeu, roleint, !roleint);
 
     curs_set(0);
     noecho();

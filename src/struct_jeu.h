@@ -13,6 +13,7 @@ typedef struct et_joueur{
     char nom[TAILLE_NOM];
     int role;
     int score;
+    int is_ai;
 }t_joueur;
 
 typedef t_joueur * joueur;
