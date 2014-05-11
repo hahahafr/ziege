@@ -84,8 +84,6 @@ int jouer(jeu_s j,coup_s c){
     if( res == 0 ){
         maj_jeu(j,c);
         return(0);
-    }else{
-        printf("%s\n",error[0]);
     }
 
     return(res);
