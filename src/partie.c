@@ -53,7 +53,10 @@ void maj_partie(partie g,coup_s c,int sup_pion[]){
         g->c[i].position[ORD] = c->destination[ORD];
         g->c[i].position[ABS] = c->destination[ABS];
 
-        g->nb_chevre++;
+
+        if(c->source[ORD] == VIDE){
+            g->nb_chevre++;
+        }
 
 
     }
