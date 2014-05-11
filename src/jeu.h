@@ -12,7 +12,7 @@
 /******************************************************************/
 
 void init_jeu(jeu_s * j);
-void init_player(jeu_s j);
+void init_player(jeu_s j, int rj1);
 
 //initialise le tableau de tigre mais aussi leur position de début sur le plateau
 void init_tigres(jeu_s j);

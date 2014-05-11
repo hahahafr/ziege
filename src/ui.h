@@ -5,6 +5,7 @@
 #include "struct_jeu.h"
 #include <ncurses.h>
 #include <string.h>
+#include "jeu.h"
 
 #define TIGRE_CH 'T'
 #define CHEVRE_CH 'C'
@@ -43,10 +44,10 @@ coord_aff_vers_jeu(aff_s aff, int iny, int inx, int *outx, int *outy);
    in: x, y
   out: y, x
 */
-int
+void
 coord_jeu_vers_aff(aff_s aff, int inx, int iny, int *outy, int *outx);
 
-int
+coup_s
 saisir_coups(aff_s aff);
 
 #endif

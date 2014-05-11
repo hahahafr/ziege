@@ -6,7 +6,6 @@ void init_jeu(jeu_s * j){
     init_plateau(&((*j)->p));
     init_partie(&((*j)->g));
 
-    init_player(*j);
     init_tigres(*j);
     init_chevres(*j);
 
@@ -36,27 +35,14 @@ void init_tigres(jeu_s j){
         j->p->grille[j->g->t[i].position[ORD]][j->g->t[i].position[ABS]].pion = TIGRE;
 }
 
-void init_player(jeu_s j){
+void init_player(jeu_s j, int rj1){
 
-    int role;
+    int role = rj1;
 
     j->participant = (joueur)malloc(sizeof(t_joueur)*2);
 
     j->participant[CHEVRE].score = 0;
     j->participant[TIGRE].score = 0;
-
-    do{
-        printf("Joueur 1, quel est votre role ? ( 0 = chevre, 1 tigre)\n");
-        scanf("%d",&role);
-    }while(role !=1 && role != 0);
-
-    /*affichage*/
-
-    printf("Veuillez saisir le nom du joueur 1 :\n");
-    scanf("%s",j->participant[role].nom);
-
-    printf("Veuillez saisir le nom du joueur2 :\n");
-    scanf("%s",j->participant[1-role].nom);
 
     j->participant[role].role = 1 - j->participant[1-role].role;
 }

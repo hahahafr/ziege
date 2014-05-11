@@ -5,7 +5,7 @@ LIBDIR=lib
 
 LIBSPRE=libncurses.a libtinfo.a libgpm.a
 LIBSLINKER=$(LIBSPRE:%=$(LIBDIR)/%)
-SOURCES=main.c ui.c
+SOURCES:=$(shell cd $(SRCDIR) && ls *.c)
 OBJECTSPRE=$(SOURCES:%.c=%.o)
 OBJECTSLINKER=$(OBJECTSPRE:%=$(OBJDIR)/%)
 EXECUTABLE=ziege
@@ -17,7 +17,7 @@ LDFLAGS=-static
 
 all: ziege
 
-ziege: main.o ui.o
+ziege: $(OBJECTSPRE)
 	mkdir -p $(BINDIR)
 	$(CC) $(LDFLAGS) $(OBJECTSLINKER) -o $(BINDIR)/$@ $(LIBSLINKER)
 
