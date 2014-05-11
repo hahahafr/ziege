@@ -24,9 +24,6 @@ void maj_partie(partie g,coup_s c,int sup_pion[]){
         while( ! ( sup_pion[ORD] == g->c[i].position[ORD] && sup_pion[ABS] == g->c[i].position[ABS] ) && i < CHEVRE )
             i++;
 
-        if( i >= NB_MAX_CHEVRE )
-            return;
-
         g->c[i].position[ORD] = VIDE;
         g->c[i].position[ABS] = VIDE;
     }
@@ -47,11 +44,18 @@ void maj_partie(partie g,coup_s c,int sup_pion[]){
         while( ! ( c->source[ORD] == g->c[i].position[ORD] &&  c->source[ABS] == g->c[i].position[ABS] ) && i < NB_MAX_CHEVRE )
             i++;
 
+//        if(c->source[ORD] != VIDE && i >= NB_MAX_CHEVRE){
+//            return;
+//        }
+
         g->c[i].position[ORD] = c->destination[ORD];
         g->c[i].position[ABS] = c->destination[ABS];
 
 
         if(c->source[ORD] == VIDE){
+
+            g->c[g->nb_chevre].position[ORD] = c->destination[ORD];
+            g->c[g->nb_chevre].position[ABS] = c->destination[ABS];
             g->nb_chevre++;
         }
 
