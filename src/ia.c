@@ -335,7 +335,10 @@ int test_position_tigre(jeu_s j,coup_s c){
                     if( get_pion(j->p,ord,abs) == VIDE ){
                         c->destination[ORD] = ord;
                         c->destination[ABS] = abs;
+                        score_iter = 0;
                     }
+
+                    score_iter = 0;
 
                     if( get_pion(j->p,ord,abs) == CHEVRE && !hors_limite(der_ord,der_abs) && get_pion(j->p,der_ord,der_abs) == VIDE ){
                         //je mange
@@ -354,7 +357,10 @@ int test_position_tigre(jeu_s j,coup_s c){
                     if( get_pion(j->p,op_ord,op_abs) == VIDE ){
                         c->destination[ORD] = op_ord;
                         c->destination[ABS] = op_abs;
+                        score_iter = 0;
                     }
+
+                    score_iter = 0;
 
                     if( get_pion(j->p,op_ord,op_abs) == CHEVRE && !hors_limite(der_ord,der_abs) && get_pion(j->p,der_ord,der_abs) == VIDE ){
                         // ou j'ai de la chance moi
