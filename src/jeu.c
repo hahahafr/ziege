@@ -125,9 +125,9 @@ void maj_score_tigre(jeu_s j){
 }
 
 int get_phase(jeu_s j){
-    return(get_parti_phase(j->p));
+    return(get_parti_phase(j->g));
 }
 
 int get_joueur(jeu_s j){
-    return(get_parti_joueur(j->p));
+    return(get_parti_joueur(j->g));
 }
