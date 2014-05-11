@@ -48,6 +48,6 @@ void
 coord_jeu_vers_aff(aff_s aff, int inx, int iny, int *outy, int *outx);
 
 coup_s
-saisir_coups(aff_s aff);
+saisir_coups(jeu_s jeu, aff_s aff);
 
 #endif
