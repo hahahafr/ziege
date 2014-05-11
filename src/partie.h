@@ -42,5 +42,9 @@ void tour_suivant(partie g);
 
 void maj_partie(partie g,coup_s c,int sup_pion[]);
 
+int get_parti_phase(partie p);
+
+int get_parti_joueur(partie p);
+
 #endif
 
