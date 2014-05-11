@@ -20,11 +20,12 @@ void init_tigres(jeu_s j);
 //initialise le tableau de tigre mais aussi leur position de début sur le plateau
 void init_chevres(jeu_s j);
 
-int jouer(jeu_s j);
+//joue ...
+int jouer(jeu_s j,coup_s c);
 
 /*
 test si tout les chèvre on été mangé ou que tout les tigres soient bloqués
-    retourne ;
+    retourne ou que toutes les chèvres sont bloquées ;
         - true, si la fin de la partie est atteinte
         - false sinon
 */

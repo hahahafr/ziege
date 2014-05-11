@@ -47,29 +47,19 @@ void init_player(jeu_s j, int rj1){
     j->participant[role].role = 1 - j->participant[1-role].role;
 }
 
-int jouer(jeu_s j){
+int jouer(jeu_s j,coup_s c){
     /*boucle infini qui fait jouer les joueurs tours par tours*/
-    coup_s c;
-
-    while(!is_end(j)){
-        system("cls");
-
-        printf("%s a vous de jouer !\n",j->participant[j->g->joueur].nom);
-
-        c = saisi_action(j);
-        if(traitement_action(j,c)){
-            maj_jeu(j,c);
-            tour_suivant(j->g);
-        }
-        free(c);
-        system("pause");
+    if(traitement_action(j,c)){
+        maj_jeu(j,c);
+        tour_suivant(j->g);
+        return(0);
     }
 
-    return(0);
+    return(-1);
 }
 
 bool is_end(jeu_s j){
-    if(j->participant[TIGRE].score == 7 ||  tigre_immobile(j) ){
+    if(j->participant[TIGRE].score == 7 ||  tigre_immobile(j) || chevres_immobiles(j) ){
         return(true);
     }
     return(false);
