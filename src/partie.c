@@ -72,3 +72,11 @@ void tour_suivant(partie g){
         g->phase =  PHASE_DEPLACEMENT;
     }
 }
+
+int get_parti_joueur(partie p){
+    return(p->joueur);
+}
+
+int get_parti_phase(partie p){
+    return(p->phase);
+}
