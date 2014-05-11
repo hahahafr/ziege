@@ -7,7 +7,7 @@
 bool plateau_coup(jeu_s j, coup_s c);
 
 /*Determine si un coup est possible mais ne tiens pas en compte de ce qu'il y à l'interieur du plateau*/
-bool validite_coup(jeu_s j, coup_s c);
+int validite_coup(jeu_s j, coup_s c);
 
 /*test si le coup utilise les diagonale et si elle sont disponnible à partir de la postion source*/
 bool test_diagonale(coup_s c);
