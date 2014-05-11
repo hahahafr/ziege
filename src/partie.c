@@ -41,24 +41,19 @@ void maj_partie(partie g,coup_s c,int sup_pion[]){
     }
 
     if( c->type == CHEVRE ){
-        while( ! ( c->source[ORD] == g->c[i].position[ORD] &&  c->source[ABS] == g->c[i].position[ABS] ) && i < NB_MAX_CHEVRE )
-            i++;
-
-//        if(c->source[ORD] != VIDE && i >= NB_MAX_CHEVRE){
-//            return;
-//        }
-
-        g->c[i].position[ORD] = c->destination[ORD];
-        g->c[i].position[ABS] = c->destination[ABS];
-
 
         if(c->source[ORD] == VIDE){
 
             g->c[g->nb_chevre].position[ORD] = c->destination[ORD];
             g->c[g->nb_chevre].position[ABS] = c->destination[ABS];
             g->nb_chevre++;
-        }
+        }else{
+            while( ! ( c->source[ORD] == g->c[i].position[ORD] &&  c->source[ABS] == g->c[i].position[ABS] ) && i < NB_MAX_CHEVRE )
+                i++;
 
+            g->c[i].position[ORD] = c->destination[ORD];
+            g->c[i].position[ABS] = c->destination[ABS];
+        }
 
     }
     tour_suivant(g);
