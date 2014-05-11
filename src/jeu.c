@@ -51,8 +51,9 @@ int jouer(jeu_s j,coup_s c){
     /*boucle infini qui fait jouer les joueurs tours par tours*/
     if(traitement_action(j,c)){
         maj_jeu(j,c);
-        tour_suivant(j->g);
         return(0);
+    }else{
+        printf("nok\n");
     }
 
     return(-1);
