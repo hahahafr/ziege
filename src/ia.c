@@ -68,10 +68,7 @@ coup_s choix_deplacement_chevre(jeu_s j){
             c->source[ORD] = -1;
             c->source[ABS] = -1;
 
-            printf("test chevre en %d %d\n",c->destination[ORD],c->destination[ABS]);
-
             score_iter = test_position_chevre(j,c);
-            printf("score iter de la chevre :%d\n",score_iter);
 
             if(score_iter == 0){
 
@@ -160,11 +157,9 @@ int chevre_deplacement(jeu_s j,coup_s c){
                     c->destination[ORD] =  op_ord;
                     c->destination[ABS] =  op_abs;
 
-                    printf("c destination  : %d %d\n",op_ord,op_abs);
                     score_iter = test_position_chevre(j,c);
 
                     if(score_iter >= score){
-                        printf("score iter : %d\n",score_iter);
                         score = score_iter;
                         r->destination[ORD] = op_ord;
                         r->destination[ABS] = op_abs;
@@ -180,8 +175,6 @@ int chevre_deplacement(jeu_s j,coup_s c){
     c->destination[ORD] =  r->destination[ORD];
     c->destination[ABS] =  r->destination[ABS];
 
-    printf("resultat : %d %d\n",c->destination[ORD],c->destination[ABS]);
-
     free(r);
 
     return(score);
@@ -194,8 +187,6 @@ int test_position_chevre(jeu_s je,coup_s c){
 
     int ord = c->destination[ORD] - 1;
     int abs = c->destination[ABS] - 1;
-
-    printf("depart %d %d\n",ord,abs);
 
     int op_ord;
     int op_abs;
@@ -246,7 +237,6 @@ int test_position_chevre(jeu_s je,coup_s c){
                     }
 //                    printf("pion %d %d : %d\n",op_ord,op_abs, get_pion(je->p,op_ord,op_abs));
                     if( get_pion(je->p,op_ord,op_abs) == TIGRE && score_iter == 1 ){
-                        printf("ok\n");
                         score_iter = 0;
                     }
 
@@ -260,8 +250,6 @@ int test_position_chevre(jeu_s je,coup_s c){
 
         ord++;
     }
-
-    printf("score : %d\n\n",score);
 
     return(score);
 }
