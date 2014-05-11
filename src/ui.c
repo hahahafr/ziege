@@ -290,7 +290,58 @@ int maj_affichage(jeu_s jeu, aff_s aff)
 
     int winmaxx, winmaxy;
     getmaxyx(aff->etat, winmaxy, winmaxx);
-    mvwprintw(aff->etat, winmaxy - 2, 2, "Score TIGRE : %d", jeu->participant[TIGRE].score);
+    
+    mvwprintw(aff->etat, winmaxy - 2, 2, "Score TIGRE:");
+    wattron(aff->etat, A_BOLD);
+    wprintw(aff->etat, " %d", jeu->participant[TIGRE].score);
+    wattroff(aff->etat, A_BOLD);
+    wclrtoeol(aff->etat);
+
+    mvwprintw(aff->etat, winmaxy - 3, 2, "Score CHEVRE:");
+    wattron(aff->etat, A_BOLD);
+    wprintw(aff->etat, " %d", jeu->participant[CHEVRE].score);
+    wattroff(aff->etat, A_BOLD);
+    wclrtoeol(aff->etat);
+    
+    if (get_phase(jeu) == PHASE_PLACEMENT)
+    {
+        mvwprintw(aff->etat, winmaxy - 4, 2, "PHASE: ");
+        wattron(aff->etat, A_BOLD);
+        wprintw(aff->etat, "PLACEMENT", get_phase(jeu));
+        wattroff(aff->etat, A_BOLD);
+        wclrtoeol(aff->etat);
+    }
+    if (get_phase(jeu) == PHASE_DEPLACEMENT)
+    {
+        mvwprintw(aff->etat, winmaxy - 4, 2, "PHASE: ");
+        wattron(aff->etat, A_BOLD);
+        wprintw(aff->etat, "DEPLACEMENT", get_phase(jeu));
+        wattroff(aff->etat, A_BOLD);
+        wclrtoeol(aff->etat);
+    }
+
+    if (get_joueur(jeu) == CHEVRE)
+    {
+        mvwprintw(aff->etat, winmaxy - 5, 2, "JOUEUR: ");
+        wattron(aff->etat, A_REVERSE | A_BOLD);
+        wprintw(aff->etat, "CHEVRES", get_joueur(jeu));
+        wattroff(aff->etat, A_REVERSE | A_BOLD);
+        wclrtoeol(aff->etat);
+    }
+    if (get_joueur(jeu) == TIGRE)
+    {
+        mvwprintw(aff->etat, winmaxy - 5, 2, "JOUEUR: ");
+        wattron(aff->etat, A_REVERSE | A_BOLD);
+        wprintw(aff->etat, "TIGRE", get_joueur(jeu));
+        wattroff(aff->etat, A_REVERSE | A_BOLD);
+        wclrtoeol(aff->etat);
+    }
+
+    mvwprintw(aff->etat, winmaxy - 6, 2, "CHEVRES RESTANTES:");
+    wattron(aff->etat, A_BOLD);
+    wprintw(aff->etat, " %d", 25-jeu->participant[TIGRE].score);
+    wattroff(aff->etat, A_BOLD);
+    wclrtoeol(aff->etat);
 
 
     // i = ORD = x
@@ -311,6 +362,12 @@ int maj_affichage(jeu_s jeu, aff_s aff)
                 mvwaddch(aff->plateau, y, x, TIGRE_CH | COLOR_PAIR(TIGRE+1));
                 wrefresh(aff->plateau);
             }
+            else
+            {
+                coord_jeu_vers_aff(aff, i, j, &y, &x);
+                mvwaddch(aff->plateau, y, x, ' ');
+                wrefresh(aff->plateau);
+            }
         }
     }
     return 0;
@@ -320,13 +377,25 @@ void jouer_ui(jeu_s jeu, aff_s aff)
 {
     coup_s c;
 
+    int x, y;
+
     while(!is_end(jeu))
     {
         maj_affichage(jeu, aff);
         c = saisir_coups(jeu, aff);
         jouer(jeu, c);
     }
+    
+    clear();
+    getmaxyx(stdscr, y, x);
+    attron(A_BOLD | A_REVERSE); 
+    keypad(stdscr, FALSE);
+    if (jeu->participant[TIGRE].score == 7)
+        mvprintw((y/2), (x/2)-23, "Les tigres ont gagnés !");
+    else
+        mvprintw((y/2), (x/2)-24, "Les chèvres ont gagnés !");
 
+    getch();
 }
 
 void init_player_ui(jeu_s jeu, aff_s aff)
@@ -385,14 +454,27 @@ coup_s saisir_coups(jeu_s jeu, aff_s aff)
     int second_click = 0;
 
 
-
     if (get_phase(jeu) == PHASE_PLACEMENT && get_joueur(jeu) == CHEVRE)
     {
         coup->source[ABS]=-1;
         coup->source[ORD]=-1;
         second_click = 1;
         wattron(aff->etat, A_REVERSE | A_BOLD);
-        mvwprintw(aff->etat, 1, 2, "Positionnez une chèvre %d %d");
+        mvwprintw(aff->etat, 1, 2, "Positionnez une chèvre");
+        wattroff(aff->etat, A_REVERSE | A_BOLD);
+        wrefresh(aff->etat);
+    }
+    if (get_phase(jeu) == PHASE_DEPLACEMENT && get_joueur(jeu) == CHEVRE)
+    {
+        wattron(aff->etat, A_REVERSE | A_BOLD);
+        mvwprintw(aff->etat, 1, 2, "Déplacez une chèvre");
+        wattroff(aff->etat, A_REVERSE | A_BOLD);
+        wrefresh(aff->etat);
+    }
+    if (get_joueur(jeu) == TIGRE)
+    {
+        wattron(aff->etat, A_REVERSE | A_BOLD);
+        mvwprintw(aff->etat, 1, 2, "Déplacez un tigre");
         wattroff(aff->etat, A_REVERSE | A_BOLD);
         wrefresh(aff->etat);
     }
@@ -413,6 +495,11 @@ coup_s saisir_coups(jeu_s jeu, aff_s aff)
                 {
                     if (second_click)
                     {
+
+                        wattron(aff->etat, A_BOLD);
+                        mvwprintw(aff->etat, 3, 2, "FAIRE SELECTION");
+                        wattroff(aff->etat, A_BOLD);
+                        wrefresh(aff->etat);
 
                         err = coord_aff_vers_jeu(aff, event.y, event.x, &(coup->destination[ABS]),
                          &(coup->destination[ORD]));
@@ -443,6 +530,12 @@ coup_s saisir_coups(jeu_s jeu, aff_s aff)
                     }
                     else
                     {
+
+                        wattron(aff->etat, A_BOLD);
+                        mvwprintw(aff->etat, 3, 2, "CHOIX DE LA DESTINATION");
+                        wattroff(aff->etat, A_BOLD);
+                        wrefresh(aff->etat);
+
                         err = coord_aff_vers_jeu(aff, event.y, event.x, &(coup->source[ABS]),
                          &(coup->source[ORD]));
                         if (!err)

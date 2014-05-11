@@ -59,6 +59,8 @@ int jouer(jeu_s j,coup_s c){
     return(-1);
 }
 
+
+
 bool is_end(jeu_s j){
     if( j->participant[TIGRE].score == 7 ){
         return(true);
