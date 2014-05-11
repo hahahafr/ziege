@@ -158,6 +158,8 @@ bool test_eat_chevre(jeu_s j, coup_s c){
     abs = ( c->destination[ABS] + c->source[ABS] ) /2;
 
     if( get_pion(j->p,ord,abs) !=CHEVRE){
+        set_supp_pion_ord(j->p,-1);
+        set_supp_pion_abs(j->p,-1);
         return(false);
     }
 
