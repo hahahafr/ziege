@@ -233,11 +233,16 @@ bool chevres_immobiles(jeu_s j){
     bool immo = true;
     int i=0;
 
-    while(immo == true && i<NB_MAX_CHEVRE){
+    while(immo == true && i< j->g->nb_chevre){
         if(test_deplacement_possible(j, j->g->c[i]))
             immo = false;
        i++;
     }
 
-    return(immo);
+    if( i >= j->g->nb_chevre ){
+        return(immo);
+    }
+
+    return(false);
+
 }
