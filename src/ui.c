@@ -323,9 +323,7 @@ void jouer_ui(jeu_s jeu, aff_s aff)
     while(!is_end(jeu))
     {
         maj_affichage(jeu, aff);
-        c = saisir_coups(aff);
-        move(0,0);
-        printw("%d %d\n",c->destination[ORD],c->destination[ABS]);
+        c = saisir_coups(jeu, aff);
         jouer(jeu, c);
     }
 
@@ -335,7 +333,8 @@ void init_player_ui(jeu_s jeu, aff_s aff)
 {
     char nomj1[TAILLE_NOM];
     char nomj2[TAILLE_NOM];
-    int rolej1;
+    char rolej1;
+    int roleint;
 
     curs_set(1);
     echo();
@@ -346,7 +345,8 @@ void init_player_ui(jeu_s jeu, aff_s aff)
     mvwprintw(aff->etat, 2, 2, "0 pour chèvre, 1 pour tigre :");
     wattroff(aff->etat, A_BOLD | A_REVERSE);
     wattron(aff->etat, A_BOLD);
-    mvwscanw(aff->etat, 3, 2, "%d", &rolej1);
+    mvwscanw(aff->etat, 3, 2, "%c", &rolej1);
+    wrefresh(aff->etat);
     wattroff(aff->etat, A_BOLD);
 
     wmove(aff->etat, 1, 2);
@@ -356,29 +356,55 @@ void init_player_ui(jeu_s jeu, aff_s aff)
     wmove(aff->etat, 3, 2);
     wclrtoeol(aff->etat);
     wrefresh(aff->etat);
-    } while (rolej1 != 0 && rolej1 != 1);
+    } while ((rolej1 != '0') && (rolej1) != '1');
 
-    init_player(jeu, rolej1);
+    if (rolej1 == '0')
+        roleint = 0;
+    else
+        roleint = 1;
+
+    init_player(jeu, roleint);
 
     curs_set(0);
     noecho();
 }
 
-coup_s saisir_coups(aff_s aff)
+coup_s saisir_coups(jeu_s jeu, aff_s aff)
 {
     int c;
     MEVENT event;
     mousemask(ALL_MOUSE_EVENTS, NULL);
 
-    int second_click = 0;
+
 
     int clics_sont_valides = 0;
     int err;
 
     coup_s coup = malloc(sizeof(t_coup_s));
 
+    int second_click = 0;
+
+
+
+    if (get_phase(jeu) == PHASE_PLACEMENT && get_joueur(jeu) == CHEVRE)
+    {
+        coup->source[ABS]=-1;
+        coup->source[ORD]=-1;
+        second_click = 1;
+        wattron(aff->etat, A_REVERSE | A_BOLD);
+        mvwprintw(aff->etat, 1, 2, "Positionnez une chèvre %d %d");
+        wattroff(aff->etat, A_REVERSE | A_BOLD);
+        wrefresh(aff->etat);
+    }
+
     do
     {
+        wmove(aff->etat, 1, 2);
+        wclrtoeol(aff->etat);
+        wmove(aff->etat, 2, 2);
+        wclrtoeol(aff->etat);
+        wmove(aff->etat, 3, 2);
+        wclrtoeol(aff->etat);
         keypad(stdscr, TRUE);
         c = getch();
         if (c == KEY_MOUSE)
@@ -387,6 +413,7 @@ coup_s saisir_coups(aff_s aff)
                 {
                     if (second_click)
                     {
+
                         err = coord_aff_vers_jeu(aff, event.y, event.x, &(coup->destination[ABS]),
                          &(coup->destination[ORD]));
                         if (!err)
@@ -451,6 +478,7 @@ coup_s saisir_coups(aff_s aff)
                 }
     } while (!clics_sont_valides);
 
-    coup->source[ABS]=coup->source[ORD]=-1;
+    coup->type=get_joueur(jeu);
+
     return coup;
 }

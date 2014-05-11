@@ -13,7 +13,7 @@ EXECUTABLE=ziege
 
 CC=gcc
 CFLAGS=-c -Wall -std=c99 -I$(SRCDIR)
-LDFLAGS=-static
+LDFLAGS=-v -static
 
 all: ziege
 
