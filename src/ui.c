@@ -251,7 +251,7 @@ int coord_aff_vers_jeu(aff_s aff, int iny, int inx, int *outx, int *outy)
                 refresh();
                 cpt++;*/
 
-        while (j < PLATEAU_LARGEUR && !trouve)
+        while (j < PLATEAU_HAUTEUR && !trouve)
         {
 /*                mvprintw(cpt,0, "i:%3d, j:%3d, inx:%3d, iny:%3d, aff->tabindcoord[%d][%d][ORD]:%3d"
                   " aff->tabindcoord[%d][%d][ABS]:%3d", i, j, inx, iny, i, j, aff->tabindcoord[i][j][ORD],
@@ -259,7 +259,8 @@ int coord_aff_vers_jeu(aff_s aff, int iny, int inx, int *outx, int *outy)
                 refresh();
                 cpt++;*/
 
-            if (aff->tabindcoord[i][j][ORD] == iny && aff->tabindcoord[i][j][ABS] == inx)
+            if ((aff->tabindcoord[i][j][ORD] <= iny+1 && aff->tabindcoord[i][j][ORD] >= iny-1)
+                && (aff->tabindcoord[i][j][ABS] <= inx+2 && aff->tabindcoord[i][j][ABS] >= inx-2))
                 trouve = 1;
             else
                 j++;
@@ -287,27 +288,47 @@ int maj_affichage(jeu_s jeu, aff_s aff)
 {
     int x, y;
 
-    // i = ABS = y
-    // j = ORD = x
+    int winmaxx, winmaxy;
+    getmaxyx(aff->etat, winmaxy, winmaxx);
+    mvwprintw(aff->etat, winmaxy - 2, 2, "Score TIGRE : %d", jeu->participant[TIGRE].score);
+
+
+    // i = ORD = x
+    // j = ABS = y
     for (int i = 0; i < PLATEAU_LARGEUR; i++)
     {
         for (int j = 0; j < PLATEAU_HAUTEUR; j++)
         {
             if (get_pion(jeu->p,j,i) == CHEVRE)
             {
-                coord_jeu_vers_aff(aff, j, i, &y, &x);
+                coord_jeu_vers_aff(aff, i, j, &y, &x);
                 mvwaddch(aff->plateau, y, x, CHEVRE_CH | COLOR_PAIR(CHEVRE+1));
                 wrefresh(aff->plateau);
             }
             else if (get_pion(jeu->p,j,i) == TIGRE)
             {
-                coord_jeu_vers_aff(aff, j, i, &y, &x);
+                coord_jeu_vers_aff(aff, i, j, &y, &x);
                 mvwaddch(aff->plateau, y, x, TIGRE_CH | COLOR_PAIR(TIGRE+1));
                 wrefresh(aff->plateau);
             }
         }
     }
     return 0;
+}
+
+void jouer_ui(jeu_s jeu, aff_s aff)
+{
+    coup_s c;
+
+    while(!is_end(jeu))
+    {
+        maj_affichage(jeu, aff);
+        c = saisir_coups(aff);
+        move(0,0);
+        printw("%d %d\n",c->destination[ORD],c->destination[ABS]);
+        jouer(jeu, c);
+    }
+
 }
 
 void init_player_ui(jeu_s jeu, aff_s aff)
@@ -319,6 +340,7 @@ void init_player_ui(jeu_s jeu, aff_s aff)
     curs_set(1);
     echo();
 
+    do {
     wattron(aff->etat, A_BOLD | A_REVERSE);
     mvwprintw(aff->etat, 1, 2, "Entrez le rôle du joueur 1");
     mvwprintw(aff->etat, 2, 2, "0 pour chèvre, 1 pour tigre :");
@@ -334,6 +356,7 @@ void init_player_ui(jeu_s jeu, aff_s aff)
     wmove(aff->etat, 3, 2);
     wclrtoeol(aff->etat);
     wrefresh(aff->etat);
+    } while (rolej1 != 0 && rolej1 != 1);
 
     init_player(jeu, rolej1);
 
@@ -348,6 +371,7 @@ coup_s saisir_coups(aff_s aff)
     mousemask(ALL_MOUSE_EVENTS, NULL);
 
     int second_click = 0;
+
     int clics_sont_valides = 0;
     int err;
 
@@ -399,6 +423,8 @@ coup_s saisir_coups(aff_s aff)
                             second_click = 1;
                             wmove(aff->etat, 1, 2);
                             wclrtoeol(aff->etat);
+                            wmove(aff->etat, 2, 2);
+                            wclrtoeol(aff->etat);
                             mvwprintw(aff->etat, 1, 2, "SX: ");
                             wattroff(aff->etat, A_BOLD);
                             wattron(aff->etat, A_BOLD);
@@ -412,6 +438,10 @@ coup_s saisir_coups(aff_s aff)
                         }
                         else
                         {
+                            wmove(aff->etat, 1, 2);
+                            wclrtoeol(aff->etat);
+                            wmove(aff->etat, 2, 2);
+                            wclrtoeol(aff->etat);
                             wattron(aff->etat, A_REVERSE | A_BOLD);
                             mvwprintw(aff->etat, 1, 2, "Clic invalide, cliquez sur un pion!");
                             wattroff(aff->etat, A_REVERSE | A_BOLD);
@@ -421,5 +451,6 @@ coup_s saisir_coups(aff_s aff)
                 }
     } while (!clics_sont_valides);
 
-    return 0;
+    coup->source[ABS]=coup->source[ORD]=-1;
+    return coup;
 }

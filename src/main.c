@@ -12,8 +12,9 @@ int main(int argc, char **argv)
     init_jeu(&jeu);
     init_affichage(jeu, &aff);
     init_player_ui(jeu, aff);
-    maj_affichage(jeu, aff);
-    saisir_coups(aff);
+
+    jouer_ui(jeu, aff);
+    
     endwin();
 
     return 0;
