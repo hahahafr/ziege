@@ -1,63 +1,53 @@
 #include "logique.h"
 
-bool validite_coup(jeu_s j,coup_s c){
+int validite_coup(jeu_s j,coup_s c){
     if( !test_limite(c) ){
-        printf("Coup hors limite !\n");
-        return(false);
+        return(1);
     }
 
     if( c->source[ORD] != -1 && c->source[ABS] != -1 && est_vide_source(j,c) ){
-        printf("Erreur, deplacement d'une case vide!\n");
-        return(false);
+        return(2);
     }
 
     if( !est_vide_destination(j,c) ){
-        printf("Case prise!\n");
-        return(false);
+        return(3);
     }
 
     if(c->source[ORD] != -1 && c->source[ABS] != -1 && c->type != get_pion(j->p,c->source[ORD],c->source[ABS])){
-        printf("Deplacement des pions d'un adversaire, incorrect!(tricheur)\n");
-        return(false);
+        return(4);
     }
 
     if( c->source[ORD] == VIDE && c->type == TIGRE ){
-        printf("On ne peut pas placer plus de tigre!\n");
-        return(false);
+        return(5);
     }
 
     if( test_immobile(c)){
-        printf("Deplacement incorrect!\n");
-        return(false);
+        return(6);
     }
 
     if( c->type ==  TIGRE && !test_deplacement(c) && ! test_deplacement_tigre(j,c) ){
-        printf("Deplacement de tigre incorrect!\n");
-        return(false);
+        return(7);
     }
 
     /*Phase de placement*/
     if( j->g->phase == PHASE_PLACEMENT ){
         if( c->source[ORD] != VIDE && c->type == CHEVRE ){
-            printf("Deplacement des chevres impossible tant qu'elles ne sont pas toute posées!\n");
-            return(false);
+            return(8);
         }
 
-        return(true);
+        return(0);
     }
 
     /*Phase de deplacement*/
     if( c->type == CHEVRE && c->source[ORD] == VIDE ){
-        printf("Toute les chevres sont posées!\n");
-        return(false);
+        return(9);
     }
 
     if( c->type == CHEVRE && !test_deplacement(c) ){
-        printf("Deplacement de chevre incorect!\n");
-        return(false);
+        return(10);
     }
 
-    return(true);
+    return(0);
 }
 
 bool test_immobile(coup_s c){
