@@ -39,9 +39,6 @@ void maj_partie(partie g,coup_s c,int sup_pion[]){
         while( ! ( c->source[ORD] == g->t[i].position[ORD] &&  c->source[ABS] == g->t[i].position[ABS] ) && i < NB_MAX_TIGRE )
             i++;
 
-        if( i >= NB_MAX_TIGRE )
-            return;
-
         g->t[i].position[ORD] = c->destination[ORD];
         g->t[i].position[ABS] = c->destination[ABS];
     }
