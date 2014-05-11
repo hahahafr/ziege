@@ -50,16 +50,13 @@ void maj_partie(partie g,coup_s c,int sup_pion[]){
         while( ! ( c->source[ORD] == g->c[i].position[ORD] &&  c->source[ABS] == g->c[i].position[ABS] ) && i < NB_MAX_CHEVRE )
             i++;
 
-        if( i >= NB_MAX_CHEVRE )
-            return;
-
         g->c[i].position[ORD] = c->destination[ORD];
         g->c[i].position[ABS] = c->destination[ABS];
 
         g->nb_chevre++;
 
-    }
 
+    }
     tour_suivant(g);
 }
 

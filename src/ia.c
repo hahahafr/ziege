@@ -22,8 +22,10 @@ coup_s choix_placement_chevre(jeu_s je){
             c->destination[ABS] = j;
 
             if( est_vide_destination(je,c)){
+//                printf("position : %d %d\n",c->destination[ORD],c->destination[ABS]);
                 score_iter = test_position_chevre(je,c);
 
+//                printf("score iter : %d\n",score_iter);
                 if(score_iter > score ){
                     score = score_iter;
                     r->destination[ORD] = i;
@@ -206,6 +208,7 @@ int test_position_chevre(jeu_s je,coup_s c){
             if( !hors_limite(ord,abs) || !hors_limite(op_ord,op_abs)){
                 //POS
                 if( !hors_limite(ord,abs) && ( c->source[ORD] != ord || c->source[ABS] != abs ) ){
+//                    printf("test - %d %d\n",ord,abs);
 //                    printf("pion %d %d : %d\n",ord,abs, get_pion(je->p,ord,abs));
                     if( get_pion(je->p,ord,abs) == CHEVRE ){
                         score_iter = 2;
@@ -216,18 +219,19 @@ int test_position_chevre(jeu_s je,coup_s c){
                     }
 
                     if( get_pion(je->p,ord,abs) == TIGRE ){
+//                        printf("ok\n");
                         score_iter = 0;
                     }
                 }
-
-                if( c->source[ORD] != ord && c->source[ABS] != abs ){
-                    score_iter = 1;
-                }
+//
+//                if( c->source[ORD] != ord && c->source[ABS] != abs ){
+//                    score_iter = 1;
+//                }
 
                 //OPPOSE POS
                 if( !hors_limite(op_ord,op_abs) && ( c->source[ORD] != op_ord || c->source[ABS] != op_abs ) ){
 
-
+//                     printf("test - %d %d\n",op_ord,op_abs);
                     if( get_pion(je->p,op_ord,op_abs) == CHEVRE ){
                         score_iter = 2;
                     }

@@ -9,7 +9,7 @@ void test_ia_chevre(jeu_s * j){
     init_partie(&((*j)->g));
     init_tigres(*j);
 
-    for(int i=0;i<NB_MAX_CHEVRE;i++){
+    for(int i=0;i<1;i++){
 
         c = choix_placement_chevre(*j);
 
