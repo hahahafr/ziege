@@ -49,17 +49,20 @@ void init_player(jeu_s j, int rj1){
 
 int jouer(jeu_s j,coup_s c){
     /*boucle infini qui fait jouer les joueurs tours par tours*/
-    if(traitement_action(j,c)){
+
+    int res = 0;
+
+    res = traitement_action(j,c);
+
+    if( res == 0 ){
         maj_jeu(j,c);
         return(0);
     }else{
-        printf("nok\n");
+        printf("%s\n",error[0]);
     }
 
-    return(-1);
+    return(res);
 }
-
-
 
 bool is_end(jeu_s j){
     if( j->participant[TIGRE].score == 7 ){
