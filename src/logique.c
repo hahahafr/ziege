@@ -1,6 +1,7 @@
 #include "logique.h"
 
 int validite_coup(jeu_s j,coup_s c){
+
     if( !test_limite(c) ){
         return(1);
     }
@@ -90,7 +91,7 @@ bool test_limite(coup_s c){
     return(true);
 }
 
-bool test_diagonale(coup_s c){
+bool test_utilise_diagonale(coup_s c){
     // test pour savoir si le coup utilise les diagonales
     coup_s tmp;
 
@@ -102,18 +103,28 @@ bool test_diagonale(coup_s c){
 
     if( (fabs(tmp->destination[ABS]) - fabs(tmp->destination[ORD] )) != 0){
         // il n'utilise pas les diagonales
-        return(true);
-    }
-    // il utilise les diagonales
-    // test pour savoir si les diagonale sont disponnibles
-    if( c->destination[ORD] % 2 == 0 ){
-        //ligne paire, faut que la colonne soit paire aussi
-        return( c->destination[ABS] % 2 == 0 );
+        return(false);
     }
 
-    if( c->destination[ORD] % 2 == 1 ){
-        //ligne impaire = colonne impaire
-        return( c->destination[ABS] % 2 == 1 );
+    return(true);
+}
+
+bool test_diagonale(coup_s c){
+    // il utilise les diagonales
+    // test pour savoir si les diagonale sont disponnibles
+
+    if(!test_utilise_diagonale(c)){
+        return(true);
+    }
+
+    if( c->source[ORD] % 2 == 0 &&  c->source[ABS] % 2 == 0 ){
+        //ligne paire, faut que la colonne soit paire aussi
+        return(true);
+    }
+
+    if( ( c->source[ORD] % 2 == 1 ) && ( c->source[ABS] %2 == 1 ) ){
+        // si ligne impaire = colonne impaire
+        return(true);
     }
 
     return(false);
@@ -134,13 +145,13 @@ bool test_deplacement(coup_s c){
 
 bool test_deplacement_tigre(jeu_s j, coup_s c){
 /*test si ça correspon à un deplacement de tigre qui mange un chèvre
-  ce deplacement est valide que si il y a une chèvre à manger
-*/
+  ce deplacement est valide que si il y a une chèvre à manger*/
+
     if( fabs(c->source[ORD] - c->destination[ORD]) > 2 || fabs(c->source[ABS] - c->destination[ABS]) > 2 ){
         return(false);
     }
 
-    if(!test_diagonale(c) ){
+    if( test_utilise_diagonale(c) && !test_diagonale(c)){
         return(false);
     }
 
@@ -177,16 +188,11 @@ bool est_vide_source(jeu_s j, coup_s c){
     return( get_pion(j->p,c->source[ORD],c->source[ABS]) == -1 );
 }
 
-bool tigre_immobile(jeu_s je){
-    bool immo = true;
-    int i=0;
-    while(immo == true && i<NB_MAX_TIGRE){
-        if(test_deplacement_possible(je, je->g->t[i]))
-            immo = false;
-       i++;
-    }
-
-    return(immo);
+bool tigre_immobile(coup_s c){
+    // si le type du pion est chevre alors on ne s'en occupe on renvoi faux
+    // si le type du pion est tigre alors il faut que il faut que que la source soit != -1 pour renvoyer
+    // faux sinon c'est que tout les tigres sont bloqués
+    return( ! ( c->type == TIGRE && c->source[ORD] != -1 || c->type == CHEVRE ) );
 }
 
 bool test_deplacement_possible(jeu_s je, t_pion t){
@@ -199,24 +205,30 @@ bool test_deplacement_possible(jeu_s je, t_pion t){
     limit_ord=i+3;
     limit_abs=j+3;
 
+    coup_s c;
+
+    c =(coup_s)malloc(sizeof(t_coup_s));
+
+    c->source[ORD] = t.position[ORD];
+    c->source[ABS] = t.position[ABS];
+
     while( i < limit_ord && possible == false ){
         if(i >= 0 && i < PLATEAU_HAUTEUR){
 
             j = t.position[ABS] - 1;
 
             while(j < limit_abs && possible == false){
+                c->destination[ORD] = i;
+                c->destination[ABS] = j;
 
-                if(j >= 0 && j < PLATEAU_LARGEUR && get_pion(je->p,i,j) == VIDE){
-                    possible = true;
+                if(j >= 0 && j < PLATEAU_LARGEUR && get_pion(je->p,i,j) == VIDE && test_diagonale(c)){
+                        possible = true;
                 }
 
-                if(possible == false){
-                    j++;
-                }
+                j++;
             }
         }
-        if(possible == false)
-            i++;
+        i++;
     }
     return(possible);
 }

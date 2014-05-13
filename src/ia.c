@@ -1,7 +1,7 @@
 #include "ia.h"
 
 coup_s choix_placement_chevre(jeu_s je){
-    int i,j,ord,abs, score = 0,score_iter=0;
+    int i,j,ord,abs, score = -1,score_iter=-1;
     coup_s c,r;
 
     i = 0;
@@ -39,10 +39,6 @@ coup_s choix_placement_chevre(jeu_s je){
         i++;
     }
 
-    if( score == 0 ){
-        free(r);
-        return(c);
-    }
     free(c);
     return(r);
 
@@ -139,13 +135,13 @@ int chevre_deplacement(jeu_s j,coup_s c){
             op_ord = c->source[ORD] + (c->source[ORD] - ord);
             op_abs = c->source[ABS] + (c->source[ABS] - abs);
 
+            c->destination[ORD] =  ord;
+            c->destination[ABS] =  abs;
+
             //SI les coordonne existent
-            if( !hors_limite(ord,abs) || !hors_limite(op_ord,op_abs) ){
+            if( ( !hors_limite(ord,abs) || !hors_limite(op_ord,op_abs) ) && test_diagonale(c) ){
                 //POS
                 if( !hors_limite(ord,abs) && get_pion(j->p,ord,abs) == VIDE ){
-                    c->destination[ORD] =  ord;
-                    c->destination[ABS] =  abs;
-
                     score_iter = test_position_chevre(j,c);
 
                     if(score_iter >= score){
@@ -202,10 +198,8 @@ int test_position_chevre(jeu_s je,coup_s c){
             op_ord = c->destination[ORD] + (c->destination[ORD] - ord);
             op_abs = c->destination[ABS] + (c->destination[ABS] - abs);
 
-
-
             //SI les coordonne existent
-            if( !hors_limite(ord,abs) || !hors_limite(op_ord,op_abs)){
+            if( ( !hors_limite(ord,abs) || !hors_limite(op_ord,op_abs) ) ){
                 //POS
                 if( !hors_limite(ord,abs) && ( c->source[ORD] != ord || c->source[ABS] != abs ) ){
 //                    printf("test - %d %d\n",ord,abs);
@@ -259,7 +253,7 @@ int test_position_chevre(jeu_s je,coup_s c){
 }
 
 coup_s choix_deplacement_tigre(jeu_s je){
-    int i,j,ord,abs, score = 0,score_iter=0;
+    int i,j,ord,abs, score=0,score_iter=0;
     coup_s c,r;
 
     i = 0;
@@ -272,8 +266,8 @@ coup_s choix_deplacement_tigre(jeu_s je){
 
     c->type = r->type = TIGRE;
 
-    r->destination[ORD] = -1;
-    r->destination[ABS] = -1;
+    r->destination[ORD] = r->destination[ABS] = -1;
+    r->source[ORD] = r->source[ABS] = -1;
 
     r->type = c->type = TIGRE;
 
@@ -281,11 +275,14 @@ coup_s choix_deplacement_tigre(jeu_s je){
         c->source[ORD]= je->g->t[i].position[ORD];
         c->source[ABS] = je->g->t[i].position[ABS];
 
-//        printf("\ntigre en : %d %d\n",c->source[ORD],c->source[ABS]);
+
+//        printf("Tigre en %d %d\n",c->source[ORD],c->source[ABS]);
 
         score_iter = test_position_tigre(je,c);
 
-        if(score_iter >= score){
+//        printf("score iter : %d\n\n",score_iter);
+
+        if(score_iter >= score ){
             score = score_iter;
             r->source[ORD] = c->source[ORD];
             r->source[ABS] = c->source[ABS];
@@ -297,13 +294,12 @@ coup_s choix_deplacement_tigre(jeu_s je){
         i++;
     }
 
-//    printf("Deplacement tigre : %d %d -> %d %d\n",r->source[ORD],r->source[ABS],r->destination[ORD],r->destination[ABS]);
     free(c);
     return(r);
 }
 
 int test_position_tigre(jeu_s j,coup_s c){
-    int score = 0,score_iter=0;
+    int score = -1,score_iter=-1;
 
     int ord = c->source[ORD] - 1;
     int abs = c->source[ABS] - 1;
@@ -318,35 +314,56 @@ int test_position_tigre(jeu_s j,coup_s c){
     int limit_ord = c->source[ORD]+2;
     int limit_abs = c->source[ABS]+1;
 
-    while( ord < limit_ord && score != 1 ){
+    coup_s r;
+
+    r = (coup_s)malloc(sizeof(t_coup_s));
+
+    r->source[ORD] = c->source[ORD];
+    r->source[ABS] = c->source[ABS];
+
+    while( ord < limit_ord && score != 2 ){
         abs = c->source[ABS] - 1;
 
         do{
+            score_iter = -1;
+
+            r->destination[ORD] = ord;
+            r->destination[ABS] = abs;
+
             op_ord = c->source[ORD] + (c->source[ORD] - ord);
             op_abs = c->source[ABS] + (c->source[ABS] - abs);
 
             //SI les coordonne existent
-            if( !hors_limite(ord,abs) || !hors_limite(op_ord,op_abs) ){
+            if( (  !hors_limite(ord,abs) || !hors_limite(op_ord,op_abs) && test_diagonale(r) )){
+                //POS
+
                 if( !hors_limite(ord,abs) ){
 
                     der_ord = ord + (ord - c->source[ORD]);
                     der_abs = abs + (abs - c->source[ABS]);
 
-                    if( get_pion(j->p,ord,abs) == VIDE ){
+                    if( get_pion(j->p,ord,abs) == VIDE && score_iter < 0){
                         c->destination[ORD] = ord;
                         c->destination[ABS] = abs;
                         score_iter = 0;
                     }
 
-                    score_iter = 0;
+                    if( get_pion(j->p,ord,abs) == VIDE && !hors_limite(der_ord,der_abs) && get_pion(j->p,der_ord,der_abs) == CHEVRE ){
+                        c->destination[ORD] = ord;
+                        c->destination[ABS] = abs;
+                        score_iter = 1;
+
+                    }
 
                     if( get_pion(j->p,ord,abs) == CHEVRE && !hors_limite(der_ord,der_abs) && get_pion(j->p,der_ord,der_abs) == VIDE ){
                         //je mange
                         c->destination[ORD] = der_ord;
                         c->destination[ABS] = der_abs;
-                        score_iter = 1;
+                        score_iter = 2;
 
                     }
+
+                    //Derriere pour se rapprocher
                 }
 
                 //OPPOSE POS
@@ -354,27 +371,33 @@ int test_position_tigre(jeu_s j,coup_s c){
                     der_ord = op_ord + (op_ord - c->source[ORD]);
                     der_abs = op_abs + (op_abs - c->source[ABS]);
 
-                    if( get_pion(j->p,op_ord,op_abs) == VIDE ){
+                    if( get_pion(j->p,op_ord,op_abs) == VIDE && score_iter < 0 ){
                         c->destination[ORD] = op_ord;
                         c->destination[ABS] = op_abs;
                         score_iter = 0;
                     }
 
-                    score_iter = 0;
+                    if( get_pion(j->p,op_ord,op_abs) == VIDE && !hors_limite(der_ord,der_abs) && get_pion(j->p,der_ord,der_abs) == CHEVRE ){
+                        c->destination[ORD] = ord;
+                        c->destination[ABS] = abs;
+                        score_iter = 1;
+
+                    }
 
                     if( get_pion(j->p,op_ord,op_abs) == CHEVRE && !hors_limite(der_ord,der_abs) && get_pion(j->p,der_ord,der_abs) == VIDE ){
                         // ou j'ai de la chance moi
-                        score_iter = 1;
+                        score_iter = 2;
                         c->destination[ORD] = der_ord;
                         c->destination[ABS] = der_abs;
                     }
                 }
 
-                score = score_iter;
+                if( score_iter > score )
+                    score = score_iter;
             }
 
             abs++;
-        }while(abs < limit_abs && score != 1 && ord < c->source[ORD]);
+        }while(abs < limit_abs && score != 2 && ord < c->source[ORD]);
 
         ord++;
     }

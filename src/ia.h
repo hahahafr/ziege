@@ -20,7 +20,8 @@
                             - a la casserole = 0
 
     top placement tigre :
-                            - manger = 1
+                            - manger = 2
+                            - se rapprocher = 1
                             - se deplacer aléatoirement = 0
 */
 

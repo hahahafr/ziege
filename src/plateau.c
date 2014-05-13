@@ -9,16 +9,17 @@ void init_plateau(plateau * p){
         }
     }
 
-    (*p)->sup_pion[ORD] = (*p)->sup_pion[ABS] = -1;
+    (*p)->sup_pion[ORD] = (*p)->sup_pion[ABS] =  VIDE;
 }
 
 int maj_plateau(plateau p,coup_s c){
 
-    if(c->source[ORD] == VIDE && c->source[ABS] == -1){
+    if(c->source[ORD] == VIDE && c->source[ABS] == VIDE){
         //placement de chevre
         p->grille[c->destination[ORD]][c->destination[ABS]].pion = c->type;
         return(0);
     }
+
     p->grille[c->destination[ORD]][c->destination[ABS]].pion = p->grille[c->source[ORD]][c->source[ABS]].pion;
 
     p->grille[c->source[ORD]][c->source[ABS]].pion = VIDE;

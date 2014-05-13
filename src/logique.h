@@ -46,7 +46,7 @@ chacun d'eux si des deplacement sont disponnible
         - true , si tout les tigres son coincés
         - false , sinon
 */
-bool tigre_immobile(jeu_s j);
+bool tigre_immobile(coup_s c);
 
 /*test si toutes les chèvres sont emprisonnées*/
 bool chevres_immobiles(jeu_s j);

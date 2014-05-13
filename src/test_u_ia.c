@@ -26,54 +26,34 @@ void test_ia_chevre(jeu_s * j){
     free(c);
 }
 
-void test_ia_tigre(jeu_s *j){
+void test_ia_tigre(jeu_s j,sauvegarde s){
     coup_s c;
-    int sup_pion[2];
-    *j = (jeu_s)malloc(sizeof(t_jeu));
 
-    init_plateau(&((*j)->p));
-    init_partie(&((*j)->g));
-    init_tigres(*j);
-    init_chevres(*j);
+    maj_score_chevre(j);
+    maj_score_tigre(j);
 
     printf("info : chevre en 1 1\n");
-    (*j)->p->grille[1][1].pion = CHEVRE;
-
-    c = choix_deplacement_tigre(*j);
-
-    (*j)->p->sup_pion[ORD] = 1;
-    (*j)->p->sup_pion[ABS] = 1;
-
-    maj_plateau((*j)->p,c);
-    maj_partie((*j)->g,c,(*j)->p->sup_pion);
-
     printf("\ninfo : chevre en 3 3\n");
-    (*j)->p->grille[3][3].pion = CHEVRE;
-    c = choix_deplacement_tigre(*j);
 
-    sup_pion[0] = 3;
-    sup_pion[1] = 3;
-    maj_plateau((*j)->p,c);
-    maj_partie((*j)->g,c,sup_pion);
+    j->p->grille[1][1].pion = CHEVRE;
+    j->p->grille[3][3].pion = CHEVRE;
+    j->p->grille[3][4].pion = CHEVRE;
+    j->p->grille[4][2].pion = CHEVRE;
+    j->p->grille[0][4].pion = CHEVRE;
 
-    printf("\ninfo : chevre en 3 2\n");
-    (*j)->p->grille[3][2].pion = CHEVRE;
-    c = choix_deplacement_tigre(*j);
+    while(j ->participant[TIGRE].score != 5 ){
+        c = choix_deplacement_tigre(j);
 
-    sup_pion[0] = 3;
-    sup_pion[1] = 2;
-    maj_plateau((*j)->p,c);
-    maj_partie((*j)->g,c,sup_pion);
+        printf("Coup : %d %d || %d %d\n",c->source[ORD],c->source[ABS],c->destination[ORD],c->destination[ABS]);
 
-    (*j)->p->grille[3][2].pion = CHEVRE;
-    c = choix_deplacement_tigre(*j);
+        test_eat_chevre(j,c);
 
-    sup_pion[0] = 3;
-    sup_pion[1] = 2;
-    maj_plateau((*j)->p,c);
-    maj_partie((*j)->g,c,sup_pion);
+        maj_plateau(j->p,c);
+        maj_partie(j->g,c,j->p->sup_pion);
+        sauvegarde_fichier(j,s);
+        maj_score(j);
 
-
+    }
 }
 
 void test_choix_deplacement_chevre(jeu_s * j){

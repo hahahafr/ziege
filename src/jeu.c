@@ -81,6 +81,8 @@ int jouer(jeu_s j,coup_s c){
 
     res = traitement_action(j,c);
 
+    printf("res : %d\n",res);
+
     if( res == 0 ){
         maj_jeu(j,c);
         return(0);
@@ -99,8 +101,8 @@ coup_s choix_coup_ai(jeu_s jeu)
         return(choix_deplacement_chevre(jeu));
 }
 
-bool is_end(jeu_s j){
-    if( j->participant[TIGRE].score == 7 ){
+bool is_end(jeu_s j,coup_s c){
+    if( j->participant[TIGRE].score == 7 || j->participant[CHEVRE].score == 4 ){
         return(true);
     }
     return(false);
@@ -130,7 +132,7 @@ coup_s saisi_action(jeu_s j){
     return(c);
 }
 
-bool traitement_action(jeu_s j, coup_s c){
+int traitement_action(jeu_s j, coup_s c){
     return(validite_coup(j,c));
 }
 
@@ -171,4 +173,8 @@ int get_phase(jeu_s j){
 
 int get_joueur(jeu_s j){
     return(get_parti_joueur(j->g));
+}
+
+int get_gagnant(jeu_s j){
+    return(j->participant[TIGRE].score == 7);
 }

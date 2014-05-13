@@ -25,12 +25,12 @@ void init_chevres(jeu_s j);
 int jouer(jeu_s j,coup_s c);
 
 /*
-test si tout les chèvre on été mangé ou que tout les tigres soient bloqués
-    retourne ou que toutes les chèvres sont bloquées ;
+test si tout les chèvre on été mangé ou que tout les tigres sont bloqués, ou que toutes les chèvres sont bloquées
+    retourne  :
         - true, si la fin de la partie est atteinte
         - false sinon
 */
-bool is_end(jeu_s j);
+bool is_end(jeu_s j,coup_s c);
 
 /*
     retourne ;
@@ -44,7 +44,9 @@ coup_s saisi_action(jeu_s j);
         - true, dans le cas ou le coup est valide
         - false, dans ce cas resaisi du coup
 */
-bool traitement_action(jeu_s j, coup_s c);
+int traitement_action(jeu_s j, coup_s c);
+
+bool tes_utilise_diagonale(coup_s c);
 
 /*test des déplacement des tigres*/
 void deplacement_tigre(jeu_s * j);
@@ -62,6 +64,8 @@ void maj_score_tigre(jeu_s j);
 int get_phase(jeu_s j);
 
 int get_joueur(jeu_s j);
+
+int get_gagnant(jeu_s j);
 
 coup_s choix_coup_ai(jeu_s jeu);
 
