@@ -53,6 +53,10 @@ jeu_s revenir_arriere(jeu_s j,sauvegarde s){
 
     tmp = DEPILER(&(s->historique));
 
+    if( tmp = -1 ){
+        return(j);
+    }
+
     free(j);
 
     return(tmp);

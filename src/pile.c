@@ -58,7 +58,7 @@ Element DEPILER(Pile * p){
 	Element elem = 0;
 
 	if( PILE_VIDE((*p))){
-		printf("La pile est deja vide");
+		return(-1);
 	}else{
 		tmp = *p;
 
