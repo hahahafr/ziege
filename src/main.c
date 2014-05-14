@@ -1,18 +1,21 @@
-#include "jeu.h"
-#include "test_u_ia.h"
-#include "sauvegarde.h"
+#include <stdio.h>
 
+#include "main.h"
+#include "ui.h"
 
-int main(){
+int main(int argc, char **argv)
+{   
 
-    jeu_s j;
-    sauvegarde s;
+    jeu_s jeu;
+    aff_s aff;
 
-    init_jeu(&j);
-    init_sauvegarde(&s);
+    init_jeu(&jeu);
+    init_affichage(jeu, &aff);
+    init_player_ui(jeu, aff);
 
-    test_ia_tigre(j,s);
+    jouer_ui(jeu, aff);
+    
+    endwin();
 
-
-
+    return 0;
 }

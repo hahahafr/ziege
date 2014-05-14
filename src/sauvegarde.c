@@ -55,7 +55,7 @@ jeu_s revenir_arriere(jeu_s * j,sauvegarde s){
     return(tmp);
 }
 
-void sauvegarde_fichier(jeu_s j,sauvegarde s){
+int sauvegarde_fichier(jeu_s j,sauvegarde s){
 
     FILE * f;
 
@@ -63,7 +63,7 @@ void sauvegarde_fichier(jeu_s j,sauvegarde s){
 
     if( f==NULL ){
         printf("Erreur dans l'ouverture du fichier de sauvegarde!\n");
-        return;
+        return 1;
     }
 
     //Ecriture du plateau
@@ -99,11 +99,12 @@ void sauvegarde_fichier(jeu_s j,sauvegarde s){
     fprintf(f,"/captured %d\n",j->participant[TIGRE].score);
 
     fclose(f);
+    return 0;
 }
 
-int chargement_fichier(jeu_s j,sauvegarde s){
+int chargement_fichier(jeu_s j, sauvegarde s){
     char  buffer[100],*capture;
-    bool trouve = false;
+    bool trouve = false;    
     int h=0;
     FILE * f;
 
@@ -111,7 +112,7 @@ int chargement_fichier(jeu_s j,sauvegarde s){
 
     if( f==NULL ){
         printf("Erreur dans l'ouverture du fichier de sauvegarde!\n");
-        return;
+        return 1;
     }
 
     //Ecriture du plateau
@@ -186,4 +187,3 @@ int chargement_fichier(jeu_s j,sauvegarde s){
     return(0);
 
 }
-

@@ -12,7 +12,7 @@
 //Taille max du nom d'un joueur
 #define TAILLE_NOM 20
 //Nombre max de tigre
-#define NB_MAX_TIGRE 1
+#define NB_MAX_TIGRE 4
 //Nombre max de chèvre
 #define NB_MAX_CHEVRE 20
 //Indice de l'ordonnée dans le tableau des coordonnées

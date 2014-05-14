@@ -1,14 +1,16 @@
 #ifndef UI_MODULE
 #define UI_MODULE
 
-#include "main.h"
-#include "struct_jeu.h"
 #include <ncurses.h>
 #include <string.h>
+
+#include "main.h"
+#include "struct_jeu.h"
 #include "jeu.h"
 
 #define TIGRE_CH 'T'
 #define CHEVRE_CH 'C'
+#define VIDE_CH ' '
 
 #define TAILLE_ETAT_L 40
 #define TAILLE_CIM_L 40
@@ -25,13 +27,20 @@ typedef struct et_affichage_s {
     WINDOW *cimetiere;
     int* tabindcoord[PLATEAU_HAUTEUR][PLATEAU_LARGEUR];
 } t_affichage_s;
+
 typedef t_affichage_s * aff_s;
 
-int
+void
 init_affichage(jeu_s jeu, aff_s * aff);
 
-int
+void
 maj_affichage(jeu_s jeu, aff_s aff);
+
+void
+retracer_case(aff_s aff, int y, int x, int p);
+
+int
+return_ch_plateau(int y, int x);
 
 /* 
    in: y, x

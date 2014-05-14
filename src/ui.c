@@ -1,152 +1,20 @@
 #include "ui.h"
 
-int
-init_affichage(jeu_s jeu, aff_s * aff)
+void
+init_affichage(jeu_s jeu, aff_s *aff)
 {
-
-    // y correspond à la ligne sur laquelle sera le pion (y-1 est l'origine)
-    // type 0 = 0, 2, 4, 6, 8; 1 = 1, 5; 2 = 3, 7
-    void tracer_ligne(int type, WINDOW *plateau, int y)
-    {
-        void tracer_ligne_boite()
-        {
-            void tracer_trait_h(int n)
-            {
-                for (int i = 0; i < n; i++)
-                {
-                    waddch(plateau, ACS_HLINE);
-                }
-            }
-            void tracer_boite()
-            {
-                wmove(plateau, getcury(plateau)-1, getcurx(plateau));
-                waddch(plateau, ACS_ULCORNER);
-                tracer_trait_h(3);
-                waddch(plateau, ACS_URCORNER);
-
-                wmove(plateau, getcury(plateau)+1, getcurx(plateau)-5);
-                waddch(plateau, ACS_VLINE);
-                wmove(plateau, getcury(plateau), getcurx(plateau)+3);
-                waddch(plateau, ACS_VLINE);
-
-                wmove(plateau, getcury(plateau)+1, getcurx(plateau)-5);
-                waddch(plateau, ACS_LLCORNER);
-                tracer_trait_h(3);
-                waddch(plateau, ACS_LRCORNER);
-
-                wmove(plateau, getcury(plateau)-1, getcurx(plateau));
-            }
-            wmove(plateau, y, 2);
-            tracer_boite();
-            for (int i = 0; i < 4; i++)
-            {
-                tracer_trait_h(5);
-                tracer_boite();
-            }
-        }
-
-        void tracer_ligne_diag(int type)
-        {
-            void tracer_l_v(int n)
-            {
-                for (int i = 0; i < n; i++)
-                {
-                    waddch(plateau, ACS_VLINE);
-                    wmove(plateau, getcury(plateau)+1, getcurx(plateau)-1);
-                }
-            }
-            void tracer_l_dd(int n)
-            {
-                for (int i = 0; i < n; i++)
-                {
-                    waddch(plateau, '\\');
-                    wmove(plateau, getcury(plateau)+1, getcurx(plateau)+1);
-                }
-            }
-            void tracer_l_dg(int n)
-            {
-                for (int i = 0; i < n; i++)
-                {
-                    waddch(plateau, '/');
-                    wmove(plateau, getcury(plateau)+1, getcurx(plateau)-3);
-                }
-            }
-            void tracer_tte_l_v()
-            {
-                wmove(plateau, y-1, getcurx(plateau)+2);
-                tracer_l_v(3);
-                for (int i = 0; i < 4; i++)
-                {
-                    wmove(plateau, y-1, getcurx(plateau)+10);
-                    tracer_l_v(3);
-                }
-                wmove(plateau, y-1, 2);
-            }
-            void tracer_tte_l_dd_1()
-            {
-                wmove(plateau, y-1, getcurx(plateau)+5);
-                tracer_l_dd(3);
-                wmove(plateau, y-1, getcurx(plateau)+14);
-                tracer_l_dd(3);
-            }
-            void tracer_tte_l_dd_2()
-            {
-                wmove(plateau, y-1, getcurx(plateau)+15);
-                tracer_l_dd(3);
-                wmove(plateau, y-1, getcurx(plateau)+14);
-                tracer_l_dd(3);
-            }
-            void tracer_tte_l_dg_1()
-            {
-                wmove(plateau, y-1, 21);
-                tracer_l_dg(3);
-                wmove(plateau, y-1, 41);
-                tracer_l_dg(3);
-            }
-            void tracer_tte_l_dg_2()
-            {
-                wmove(plateau, y-1, 11);
-                tracer_l_dg(3);
-                wmove(plateau, y-1, 31);
-                tracer_l_dg(3);
-            }
-            if (type == 1)
-            {
-                tracer_tte_l_v();
-                tracer_tte_l_dd_1();
-                tracer_tte_l_dg_1();
-            }
-            else if (type == 2)
-            {
-                tracer_tte_l_v();
-                tracer_tte_l_dd_2();
-                tracer_tte_l_dg_2();
-            }
-        }
-
-        if (type == 0)
-        {
-            tracer_ligne_boite();
-        }
-        else if (type == 1 || type == 2)
-        {
-            tracer_ligne_diag(type);
-        }
-
-    }
     initscr();
     start_color();
 
-    init_pair(CHEVRE+1, COLOR_WHITE, COLOR_GREEN);
-    init_pair(TIGRE+1, COLOR_BLACK, COLOR_RED);
+    init_pair(20+CHEVRE, COLOR_WHITE, COLOR_GREEN);
+    init_pair(20+TIGRE, COLOR_WHITE, COLOR_RED);
 
-    int screeny, screenx;
-    int plateau_orig_y, plateau_orig_x;
-
-    
     noecho();
     cbreak();
     curs_set(0);
+
+    int screeny, screenx;
+    int plateau_orig_y, plateau_orig_x;
 
     getmaxyx(stdscr, screeny, screenx);
 
@@ -180,25 +48,6 @@ init_affichage(jeu_s jeu, aff_s * aff)
     wrefresh(cimetiere);
     wrefresh(plateau);
 
-    wmove(plateau, 2, 2);
-    tracer_ligne(0, plateau, getcury(plateau));
-    wmove(plateau, 5, 2);
-    tracer_ligne(1, plateau, getcury(plateau));
-    wmove(plateau, 8, 2);
-    tracer_ligne(0, plateau, getcury(plateau));
-    wmove(plateau, 11, 2);
-    tracer_ligne(2, plateau, getcury(plateau));
-    wmove(plateau, 14, 2);
-    tracer_ligne(0, plateau, getcury(plateau));
-    wmove(plateau, 17, 2);
-    tracer_ligne(1, plateau, getcury(plateau));
-    wmove(plateau, 20, 2);
-    tracer_ligne(0, plateau, getcury(plateau));
-    wmove(plateau, 23, 2);
-    tracer_ligne(2, plateau, getcury(plateau));
-    wmove(plateau, 26, 2);
-    tracer_ligne(0, plateau, getcury(plateau));
-
     (* aff) = (aff_s)malloc(sizeof(t_affichage_s));
 
     (* aff)->plateau_orig_y=plateau_orig_y;
@@ -207,10 +56,12 @@ init_affichage(jeu_s jeu, aff_s * aff)
     (* aff)->plateau=plateau;
     (* aff)->cimetiere=cimetiere;
 
+    tracer_plateau((* aff));
+
     wrefresh(etat);
     wrefresh(cimetiere);
     wrefresh(plateau);
-/*    int cpt = 0;*/
+
     for(int i = 0; i < 5; i++)
     {
         for(int j = 0; j < 5; j++)
@@ -220,51 +71,66 @@ init_affichage(jeu_s jeu, aff_s * aff)
             (* aff)->tabindcoord[i][j]=malloc(2*sizeof(int));
             (* aff)->tabindcoord[i][j][ORD]=2+plateau_orig_y+(6*i);
             (* aff)->tabindcoord[i][j][ABS]=4+plateau_orig_x+(10*j);
-
-/*            mvprintw(cpt,0,"(* aff)->tabindcoord: %d, (* aff)->tabindcoord[%d][%d]: %d, "
-              "(* aff)->tabindcoord[%d][%d][0]: %d, (* aff)->tabindcoord[%d][%d][1]: %d",
-              (* aff)->tabindcoord, i, j, (* aff)->tabindcoord[i][j], i, j, (* aff)->tabindcoord[i][j][0],
-              i, j, (* aff)->tabindcoord[i][j][1]);
-            cpt++;*/
         }
     }
+}
+/*
+void ui_redraw(jeu_s jeu, aff_s aff)
+{
+    int plateau_orig_y = (screeny-TAILLE_PLATEAU_H)/2;
+    int plateau_orig_x = (screenx-TAILLE_PLATEAU_L-TAILLE_ETAT_L)/2;
 
-    return 0;
+    wrefresh(aff->etat);
+    wrefresh(aff->cimetiere);
+    wrefresh(aff->plateau);
+
+    for(int i = 0; i < 5; i++)
+    {
+        for(int j = 0; j < 5; j++)
+        {
+            // i = y
+            // j = x
+            aff->tabindcoord[i][j]=malloc(2*sizeof(int));
+            aff->tabindcoord[i][j][ORD]=2+plateau_orig_y+(6*i);
+            aff->tabindcoord[i][j][ABS]=4+plateau_orig_x+(10*j);
+        }
+    }
+    }
+}
+*/
+
+void tracer_plateau(aff_s aff)
+{
+    for (int y = 0; y < TAILLE_PLATEAU_H-2; y++)
+    {
+        for (int x = 0; x < TAILLE_PLATEAU_L-4; x++)
+        {
+            mvwaddch(aff->plateau, y+1, x+2, return_ch_plateau(y, x));
+        }
+    }
 }
 
-int coord_aff_vers_jeu(aff_s aff, int iny, int inx, int *outx, int *outy)
+int
+coord_aff_vers_jeu(aff_s aff, int iny, int inx, int *outx, int *outy)
 {
     int i, j;
     i = j = 0;
 
-    int cpt = 0;
     int trouve = 0;
 
     while (i < PLATEAU_LARGEUR && !trouve)
     {
-
         j = 0;
-
-/*                mvprintw(cpt,0, "i:%3d, j:%3d, inx:%3d, iny:%3d, aff->tabindcoord[%d][%d][ORD]:%3d"
-                  " aff->tabindcoord[%d][%d][ABS]:%3d", i, j, inx, iny, i, j, aff->tabindcoord[i][j][ORD],
-                  i, j, aff->tabindcoord[i][j][ABS]);
-                refresh();
-                cpt++;*/
 
         while (j < PLATEAU_HAUTEUR && !trouve)
         {
-/*                mvprintw(cpt,0, "i:%3d, j:%3d, inx:%3d, iny:%3d, aff->tabindcoord[%d][%d][ORD]:%3d"
-                  " aff->tabindcoord[%d][%d][ABS]:%3d", i, j, inx, iny, i, j, aff->tabindcoord[i][j][ORD],
-                  i, j, aff->tabindcoord[i][j][ABS]);
-                refresh();
-                cpt++;*/
-
             if ((aff->tabindcoord[i][j][ORD] <= iny+1 && aff->tabindcoord[i][j][ORD] >= iny-1)
-                && (aff->tabindcoord[i][j][ABS] <= inx+2 && aff->tabindcoord[i][j][ABS] >= inx-2))
+              && (aff->tabindcoord[i][j][ABS] <= inx+2 && aff->tabindcoord[i][j][ABS] >= inx-2))
                 trouve = 1;
             else
                 j++;
         }
+
         if (!trouve)
             i++;
     }
@@ -278,16 +144,19 @@ int coord_aff_vers_jeu(aff_s aff, int iny, int inx, int *outx, int *outy)
     return 0;
 }
 
-void coord_jeu_vers_aff(aff_s aff, int inx, int iny, int *outy, int *outx)
+void
+coord_jeu_vers_aff(aff_s aff, int inx, int iny, int *outy, int *outx)
 {
     *outy = (aff->tabindcoord[iny][inx][ORD])-(aff->plateau_orig_y);
     *outx = (aff->tabindcoord[iny][inx][ABS])-(aff->plateau_orig_x);
 }
 
-int maj_affichage(jeu_s jeu, aff_s aff)   
+void
+maj_affichage(jeu_s jeu, aff_s aff)
 {
-    int x, y;
 
+    int x, y;
+    
     int winmaxx, winmaxy;
     getmaxyx(aff->etat, winmaxy, winmaxx);
     
@@ -323,17 +192,17 @@ int maj_affichage(jeu_s jeu, aff_s aff)
     if (get_joueur(jeu) == CHEVRE)
     {
         mvwprintw(aff->etat, winmaxy - 5, 2, "JOUEUR: ");
-        wattron(aff->etat, A_REVERSE | A_BOLD);
-        wprintw(aff->etat, "CHEVRES", get_joueur(jeu));
-        wattroff(aff->etat, A_REVERSE | A_BOLD);
+        wattron(aff->etat, A_BOLD | COLOR_PAIR(20));
+        wprintw(aff->etat, "CHEVRE", get_joueur(jeu));
+        wattroff(aff->etat, A_BOLD | COLOR_PAIR(20));
         wclrtoeol(aff->etat);
     }
     if (get_joueur(jeu) == TIGRE)
     {
         mvwprintw(aff->etat, winmaxy - 5, 2, "JOUEUR: ");
-        wattron(aff->etat, A_REVERSE | A_BOLD);
+        wattron(aff->etat, A_BOLD | COLOR_PAIR(21));
         wprintw(aff->etat, "TIGRE", get_joueur(jeu));
-        wattroff(aff->etat, A_REVERSE | A_BOLD);
+        wattroff(aff->etat, A_BOLD | COLOR_PAIR(21));
         wclrtoeol(aff->etat);
     }
 
@@ -353,25 +222,91 @@ int maj_affichage(jeu_s jeu, aff_s aff)
             if (get_pion(jeu->p,j,i) == CHEVRE)
             {
                 coord_jeu_vers_aff(aff, i, j, &y, &x);
-                mvwaddch(aff->plateau, y, x, CHEVRE_CH | COLOR_PAIR(CHEVRE+1));
+                retracer_case(aff, y, x, CHEVRE);
                 wrefresh(aff->plateau);
             }
             else if (get_pion(jeu->p,j,i) == TIGRE)
             {
                 coord_jeu_vers_aff(aff, i, j, &y, &x);
-                mvwaddch(aff->plateau, y, x, TIGRE_CH | COLOR_PAIR(TIGRE+1));
+                retracer_case(aff, y, x, TIGRE);
                 wrefresh(aff->plateau);
             }
             else
             {
                 coord_jeu_vers_aff(aff, i, j, &y, &x);
-                mvwaddch(aff->plateau, y, x, ' ');
+                retracer_case(aff, y, x, VIDE);
                 wrefresh(aff->plateau);
             }
         }
     }
-    return 0;
 }
+
+void retracer_case(aff_s aff, int y, int x, int p)
+{
+    if (p == CHEVRE)
+    {
+        for (int l = 0; l < 3; l++)
+            for (int c = 0; c < 5; c++)
+                mvwaddch(aff->plateau, y-1+l, x-2+c, return_ch_plateau(l, c) | A_BOLD | COLOR_PAIR(20));
+        mvwaddch(aff->plateau, y, x, CHEVRE_CH | A_BOLD | COLOR_PAIR(20));
+    }
+    else if (p == TIGRE)
+    {
+        for (int l = 0; l < 3; l++)
+            for (int c = 0; c < 5; c++)
+                mvwaddch(aff->plateau, y-1+l, x-2+c, return_ch_plateau(l, c) | A_BOLD | COLOR_PAIR(21));
+        mvwaddch(aff->plateau, y, x, TIGRE_CH | A_BOLD | COLOR_PAIR(21));
+    }
+    else
+    {
+        for (int l = 0; l < 3; l++)
+            for (int c = 0; c < 5; c++)
+                mvwaddch(aff->plateau, y-1+l, x-2+c, return_ch_plateau(l, c) | A_NORMAL);
+        mvwaddch(aff->plateau, y, x, VIDE_CH | A_NORMAL);
+    }
+}
+
+int return_ch_plateau(int y, int x)
+{
+    if (x%10 == 0 && y%6 == 0)
+        return ACS_ULCORNER;
+    
+    if ((x%10 >= 1 && x%10 <= 3) && (y%6 == 0 || y%6 == 2)
+      || ((x%10 >= 5 && x%10 <= 9) && (y%6 == 1)))
+        return ACS_HLINE;
+
+    if (x%10 == 4 && y%6 == 0)
+        return ACS_URCORNER;
+
+    if ((x%10 == 0 || x%10 == 4) && (y%6 == 1)
+      || (x%10 == 2 && y%6 >= 3 && y%6 <= 5))
+        return ACS_VLINE;
+
+    if (x%10 == 4 && y%6 == 2)
+        return ACS_LRCORNER;
+
+    if (x%10 == 0 && y%6 == 2)
+        return ACS_LLCORNER;
+
+    if ((x%20 == 5 && y%12 == 3)
+      || (x%20 == 7 && y%12 == 4)
+      || (x%20 == 9 && y%12 == 5)
+      || (x%20 == 15 && y%12 == 9)
+      || (x%20 == 17 && y%12 == 10)
+      || (x%20 == 19 && y%12 == 11))
+        return '\\';
+
+    if ((x%20 == 15 && y%12 == 5)
+      || (x%20 == 17 && y%12 == 4)
+      || (x%20 == 19 && y%12 == 3)
+      || (x%20 == 5 && y%12 == 11)
+      || (x%20 == 7 && y%12 == 10)
+      || (x%20 == 9 && y%12 == 9))
+        return '/';
+
+    return ' ';
+}
+
 
 void jouer_ui(jeu_s jeu, aff_s aff)
 {
@@ -401,7 +336,8 @@ void jouer_ui(jeu_s jeu, aff_s aff)
     getch();
 }
 
-void init_player_ui(jeu_s jeu, aff_s aff)
+void
+init_player_ui(jeu_s jeu, aff_s aff)
 {
     char nomj1[TAILLE_NOM];
     char nomj2[TAILLE_NOM];
@@ -465,7 +401,8 @@ void init_player_ui(jeu_s jeu, aff_s aff)
     noecho();
 }
 
-coup_s saisir_coups(jeu_s jeu, aff_s aff)
+coup_s
+saisir_coups(jeu_s jeu, aff_s aff)
 {
     int c;
     MEVENT event;
