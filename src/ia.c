@@ -104,7 +104,7 @@ coup_s choix_deplacement_chevre(jeu_s j){
 
             }
         }else{
-            //pas de chevre
+            
         }
         i++;
     }
@@ -220,6 +220,8 @@ int test_position_chevre(jeu_s je,coup_s c){
                     if( get_pion(je->p,ord,abs) == TIGRE ){
                         score_iter = 0;
                     }
+                }else{
+                    score_iter = 2;
                 }
 //
 //                if( c->source[ORD] != ord && c->source[ABS] != abs ){
@@ -234,15 +236,13 @@ int test_position_chevre(jeu_s je,coup_s c){
                         score_iter = 2;
                     }
 
-                    if( get_pion(je->p,op_ord,op_abs) == TIGRE && score_iter != 1 ){
-                        score_iter = 2;
-                    }
-
 //                    printf("pion %d %d : %d\n",op_ord,op_abs, get_pion(je->p,op_ord,op_abs));
                     if( get_pion(je->p,op_ord,op_abs) == TIGRE && score_iter == 1 ){
                         score_iter = 0;
                     }
 
+                }else{
+                    score_iter = 2;
                 }
 
                 if( score < score_iter )
@@ -254,6 +254,9 @@ int test_position_chevre(jeu_s je,coup_s c){
 
         ord++;
     }
+
+    if(score_iter == 0)
+        score = 0;
 
     return(score);
 }
