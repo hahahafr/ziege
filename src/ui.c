@@ -348,16 +348,11 @@ void jouer_ui(jeu_s jeu, aff_s aff)
 
     if(!erreur == 0)
     {
-        //afficher_message(aff, "ERRUURE");
-        mvwprintw(aff->message, 0, 0, "%s", error[erreur-1]);
-        wclrtoeol(aff->message);
-        wrefresh(aff->message);
+        afficher_message(aff, error[erreur-1]);
     }
     else
     {
-        wmove(aff->message, 0, 0);
-        wclrtoeol(aff->message);
-        wrefresh(aff->message);
+        clear_message(aff);
     }
 
     }
@@ -375,17 +370,15 @@ void jouer_ui(jeu_s jeu, aff_s aff)
 
 void afficher_message(aff_s aff, char *mess)
 {
-    for (int i = 0; i < strlen(mess)+4; i++)
-        mvwaddch(aff->message, 0, i, ' ');
-    
-    mvwprintw(aff->message, 1, 0, '  ');
-    wprintw(aff->message, mess);
-    wprintw(aff->message, '  ');
+    mvwprintw(aff->message, 0, 0, mess);
     wclrtoeol(aff->message);
+    wrefresh(aff->message);
+}
 
-    for (int i = 0; i < strlen(mess)+4; i++)
-        mvwaddch(aff->message, 2, i, ' ');
-
+void clear_message(aff_s aff)
+{
+    wmove(aff->message,0,0);
+    wclrtoeol(aff->message);
     wrefresh(aff->message);
 }
 
