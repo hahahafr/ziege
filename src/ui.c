@@ -323,6 +323,10 @@ void jouer_ui(jeu_s jeu, aff_s aff)
         else
             c = saisir_coups(jeu, aff);
         erreur = jouer(jeu, c);
+
+        if(erreur != 0 && jeu->participant[jeu->g->joueur].is_ai){
+            erreur = 0;
+        }
     }
 
     
@@ -337,8 +341,8 @@ void jouer_ui(jeu_s jeu, aff_s aff)
             mvprintw((y/2), (x/2)-24, "Les chèvres ont gagnés !");
 
     }else{
-        printf("%s\n",error[erreur-1]);
-        //mvwprintw(aff->etat, 8, 1, "erreur = %d, coup = %d %d || %d %d\n",erreur,c->source[ORD],c->source[ABS],c->destination[ORD],c->destination[ABS]);
+        //printf("%s\n",error[erreur-1]);
+        mvwprintw(aff->etat, 8, 1, "erreur = %d, coup = %d %d || %d %d\n",erreur,c->source[ORD],c->source[ABS],c->destination[ORD],c->destination[ABS]);
         wrefresh(aff->etat);
     }
     
