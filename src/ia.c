@@ -1,4 +1,5 @@
 #include "ia.h"
+#include "ui.h"
 
 coup_s choix_placement_chevre(jeu_s je){
     int i,j,ord,abs, score = -1,score_iter=-1;

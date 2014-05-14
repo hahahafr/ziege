@@ -81,8 +81,6 @@ int jouer(jeu_s j,coup_s c){
 
     res = traitement_action(j,c);
 
-    printf("res : %d\n",res);
-
     if( res == 0 ){
         maj_jeu(j,c);
         return(0);

@@ -311,27 +311,34 @@ int return_ch_plateau(int y, int x)
 void jouer_ui(jeu_s jeu, aff_s aff)
 {
     coup_s c;
-
+    int erreur=0;
     int x, y;
 
-    while(!is_end(jeu))
+    while(!is_end(jeu) && erreur == 0)
     {
         maj_affichage(jeu, aff);
         if (jeu->participant[jeu->g->joueur].is_ai)
             c = choix_coup_ai(jeu);
         else
             c = saisir_coups(jeu, aff);
-        jouer(jeu, c);
+        erreur = jouer(jeu, c);
+    }
+    if(erreur == 0){
+        clear();
+        getmaxyx(stdscr, y, x);
+        attron(A_BOLD | A_REVERSE); 
+        keypad(stdscr, FALSE);
+        if (jeu->participant[TIGRE].score == 7)
+            mvprintw((y/2), (x/2)-23, "Les tigres ont gagnés !");
+        else
+            mvprintw((y/2), (x/2)-24, "Les chèvres ont gagnés !");
+
+    }else{
+        move(0,0);
+        printf("DEBUG : coup = %d %d || %d %d\n",c->source[ORD],c->source[ABS],c->destination[ORD],c->destination[ABS]);
+
     }
     
-    clear();
-    getmaxyx(stdscr, y, x);
-    attron(A_BOLD | A_REVERSE); 
-    keypad(stdscr, FALSE);
-    if (jeu->participant[TIGRE].score == 7)
-        mvprintw((y/2), (x/2)-23, "Les tigres ont gagnés !");
-    else
-        mvprintw((y/2), (x/2)-24, "Les chèvres ont gagnés !");
 
     getch();
 }
