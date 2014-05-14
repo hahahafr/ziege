@@ -101,7 +101,7 @@ coup_s choix_coup_ai(jeu_s jeu)
         return(choix_deplacement_chevre(jeu));
 }
 
-bool is_end(jeu_s j,coup_s c){
+bool is_end(jeu_s j){
     if( j->participant[TIGRE].score == 7 || j->participant[CHEVRE].score == 4 ){
         return(true);
     }

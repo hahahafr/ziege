@@ -30,7 +30,7 @@ test si tout les chèvre on été mangé ou que tout les tigres sont bloqués, ou que
         - true, si la fin de la partie est atteinte
         - false sinon
 */
-bool is_end(jeu_s j,coup_s c);
+bool is_end(jeu_s j);
 
 /*
     retourne ;
