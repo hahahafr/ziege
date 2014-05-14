@@ -334,9 +334,8 @@ void jouer_ui(jeu_s jeu, aff_s aff)
             mvprintw((y/2), (x/2)-24, "Les chèvres ont gagnés !");
 
     }else{
-        move(0,0);
-        printf("DEBUG : coup = %d %d || %d %d\n",c->source[ORD],c->source[ABS],c->destination[ORD],c->destination[ABS]);
-
+        mvwprintw(aff->etat, 8, 1, "DEBUG : coup = %d %d || %d %d\n",c->source[ORD],c->source[ABS],c->destination[ORD],c->destination[ABS]);
+        wrefresh(aff->etat);
     }
     
 
