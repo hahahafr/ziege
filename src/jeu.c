@@ -8,7 +8,7 @@ void init_jeu(jeu_s * j){
     init_tigres(*j);
     init_chevres(*j);
 
-    init_sauvegarde((*j)->s);
+    init_sauvegarde(&((*j)->s));
 
 }
 
@@ -185,7 +185,7 @@ void sauvegarder(jeu_s j){
 
 void charger(jeu_s j){
     chargement_fichier(&j,j->s);
-    init_sauvegarde(j->s);
+    init_sauvegarde(&(j->s));
 }
 
 jeu_s undo(jeu_s j){

@@ -1,0 +1,10 @@
+/board
+T.G.T
+.....
+.....
+.....
+T...T
+/endboard
+/player T
+/phase 0
+/captured 0
