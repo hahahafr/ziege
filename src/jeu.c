@@ -8,6 +8,8 @@ void init_jeu(jeu_s * j){
     init_tigres(*j);
     init_chevres(*j);
 
+    init_sauvegarde((*j)->s);
+
 }
 
 void init_chevres(jeu_s j){
@@ -175,4 +177,17 @@ int get_joueur(jeu_s j){
 
 int get_gagnant(jeu_s j){
     return(j->participant[TIGRE].score == 7);
+}
+
+void sauvegarder(jeu_s j){
+    sauvegarde_fichier(j,j->s);
+}
+
+void charger(jeu_s j){
+    chargement_fichier(&j,j->s);
+    init_sauvegarde(j->s);
+}
+
+jeu_s undo(jeu_s j){
+    return(revenir_arriere(j,j->s));
 }

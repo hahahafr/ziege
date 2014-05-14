@@ -4,6 +4,7 @@
 #include "config.h"
 #include "plateau.h"
 #include "partie.h"
+#include "pile.h"
 
 /*Structure représentant un joueur
     - le score représente, pour le joueur qui s'occupe des tigre, le nombre de chevre qu'il a prise
@@ -18,6 +19,13 @@ typedef struct et_joueur{
 
 typedef t_joueur * joueur;
 
+typedef struct et_sauvegarde{
+    Pile historique;
+    char file[20];
+}t_sauvegarde;
+
+typedef t_sauvegarde * sauvegarde;
+
 /*structure représentant le jeu
     - participant tableau des joueurs rangé de cette manière :
         - indice 0 : chevre
@@ -27,9 +35,13 @@ typedef struct et_jeu {
     plateau p;
     joueur participant;
     partie g;
+    sauvegarde s;
 }t_jeu;
 
 typedef t_jeu * jeu_s;
+
+
+
 
 
 #endif
