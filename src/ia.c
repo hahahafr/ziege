@@ -181,8 +181,8 @@ int chevre_deplacement(jeu_s j,coup_s c){
 }
 
 int test_position_chevre(jeu_s je,coup_s c){
-    int score = 2;
-    int score_iter = 1;
+    int score = -1;
+    int score_iter = -1;
 
     int ord = c->destination[ORD] - 1;
     int abs = c->destination[ABS] - 1;
@@ -200,7 +200,7 @@ int test_position_chevre(jeu_s je,coup_s c){
             op_abs = c->destination[ABS] + (c->destination[ABS] - abs);
 
             //SI les coordonne existent
-            if( ( !hors_limite(ord,abs) || !hors_limite(op_ord,op_abs) ) ){
+            if( ( !hors_limite(ord,abs) || !hors_limite(op_ord,op_abs) ) && test_diagonale(c) ){
                 //POS
                 if( !hors_limite(ord,abs) && ( c->source[ORD] != ord || c->source[ABS] != abs ) ){
 //                    printf("test - %d %d\n",ord,abs);
@@ -241,7 +241,8 @@ int test_position_chevre(jeu_s je,coup_s c){
 
                 }
 
-                score = score_iter;
+                if( score < score_iter )
+                    score = score_iter;
             }
 
             abs++;
@@ -335,7 +336,7 @@ int test_position_tigre(jeu_s j,coup_s c){
             op_abs = c->source[ABS] + (c->source[ABS] - abs);
 
             //SI les coordonne existent
-            if( (  !hors_limite(ord,abs) || !hors_limite(op_ord,op_abs) && test_diagonale(r) )){
+            if( (  ( !hors_limite(ord,abs) || !hors_limite(op_ord,op_abs) ) && test_diagonale(r) )){
                 //POS
 
                 if( !hors_limite(ord,abs) ){
@@ -379,8 +380,8 @@ int test_position_tigre(jeu_s j,coup_s c){
                     }
 
                     if( get_pion(j->p,op_ord,op_abs) == VIDE && !hors_limite(der_ord,der_abs) && get_pion(j->p,der_ord,der_abs) == CHEVRE ){
-                        c->destination[ORD] = ord;
-                        c->destination[ABS] = abs;
+                        c->destination[ORD] = op_ord;
+                        c->destination[ABS] = op_abs;
                         score_iter = 1;
 
                     }
