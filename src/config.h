@@ -48,16 +48,16 @@ typedef t_coup_s * coup_s;
 //};
 
 static const char *error[] = {
-    "Coup hors limite !\n",
-    "Erreur, deplacement d'une case vide!\n",
-    "Case prise!\n",
-    "Deplacement des pions d'un adversaire, incorrect!(tricheur)\n",
-    "On ne peut pas placer plus de tigre!\n",
-    "Deplacement incorrect!\n",
-    "Deplacement de tigre incorrect!\n",
-    "Deplacement des chevres impossible tant qu'elles ne sont pas toute posées!\n",
-    "Toute les chevres sont posées!\n",
-    "Deplacement de chevre incorect!\n"
+    "Coup hors limite !",
+    "Erreur, deplacement d'une case vide!",
+    "Case prise!",
+    "Deplacement des pions d'un adversaire, incorrect!(tricheur)",
+    "On ne peut pas placer plus de tigre!",
+    "Deplacement incorrect!",
+    "Deplacement de tigre incorrect!",
+    "Deplacement des chevres impossible tant qu'elles ne sont pas toute posées!",
+    "Toute les chevres sont posées!",
+    "Deplacement de chevre incorect!"
 };
 
 #endif
