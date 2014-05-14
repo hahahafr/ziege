@@ -26,6 +26,8 @@ int sauvegarde_fichier(jeu_s j,sauvegarde s);
 */
 int chargement_fichier(jeu_s j, sauvegarde s);
 
+int sauvegarder(jeu_s j);
 
+int charger(jeu_s j);
 
 #endif
