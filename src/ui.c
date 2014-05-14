@@ -1,4 +1,5 @@
 #include "ui.h"
+#include "logique.h"
 
 void
 init_affichage(jeu_s jeu, aff_s *aff)
@@ -69,7 +70,6 @@ init_affichage(jeu_s jeu, aff_s *aff)
 
     tracer_plateau((* aff));
 
-    mvwprintw(cimetiere, 0, 2, "Appuyer sur 's' pour sauvegarder");
     wrefresh(etat);
     wrefresh(cimetiere);
     wrefresh(plateau);
@@ -258,6 +258,9 @@ maj_affichage(jeu_s jeu, aff_s aff)
             }
         }
     }
+
+    mvwprintw(aff->cimetiere, 0, 2, "Appuyer sur 's' pour sauvegarder");
+    wrefresh(aff->cimetiere);
 }
 
 void retracer_case(aff_s aff, int y, int x, int p)
@@ -345,6 +348,9 @@ void jouer_ui(jeu_s jeu, aff_s aff)
     if(!erreur == 0)
     {
         //afficher_message(aff, "ERRUURE");
+        mvwprintw(aff->message, 0, 0, "%s", error[erreur-1]);
+        wclrtoeol(aff->message);
+        wrefresh(aff->message);
     }
     else
     {
@@ -354,7 +360,6 @@ void jouer_ui(jeu_s jeu, aff_s aff)
     }
 
     }
-    
         clear();
         getmaxyx(stdscr, y, x);
         attron(A_BOLD | A_REVERSE); 
