@@ -187,3 +187,18 @@ int chargement_fichier(jeu_s j, sauvegarde s){
     return(0);
 
 }
+
+int sauvegarder(jeu_s j)
+{
+    sauvegarde s;
+    init_sauvegarde(&s);
+    ajout_historique(j,s);
+    return(sauvegarde_fichier(j,s));
+}
+
+int charger(jeu_s j)
+{
+    sauvegarde s;
+    init_sauvegarde(&s);
+    return(chargement_fichier(j,s));
+}

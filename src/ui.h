@@ -25,6 +25,7 @@ typedef struct et_affichage_s {
     WINDOW *plateau;
     WINDOW *etat;
     WINDOW *cimetiere;
+    WINDOW *message;
     int* tabindcoord[PLATEAU_HAUTEUR][PLATEAU_LARGEUR];
 } t_affichage_s;
 

@@ -9,6 +9,7 @@ init_affichage(jeu_s jeu, aff_s *aff)
 
     init_pair(20+CHEVRE, COLOR_WHITE, COLOR_GREEN);
     init_pair(20+TIGRE, COLOR_WHITE, COLOR_RED);
+    init_pair(23, COLOR_WHITE, COLOR_YELLOW);
 
     noecho();
     cbreak();
@@ -39,6 +40,14 @@ init_affichage(jeu_s jeu, aff_s *aff)
       TAILLE_CIM_L,
       screeny/2,
       screenx-TAILLE_CIM_L+2);
+
+    WINDOW *message = newwin(
+      3,
+      screenx-TAILLE_ETAT_L-2,
+      1,
+      2);
+
+    wattron(message, A_BOLD | COLOR_PAIR(23));
     
     wborder(etat, ACS_VLINE, ' ', ' ', ACS_HLINE, ACS_VLINE, ' ', ACS_LTEE, ACS_HLINE); 
     wborder(cimetiere, ACS_VLINE, ' ', ' ', ' ', ACS_VLINE, ' ', ACS_VLINE, ' ');
@@ -56,12 +65,15 @@ init_affichage(jeu_s jeu, aff_s *aff)
     (* aff)->etat=etat;
     (* aff)->plateau=plateau;
     (* aff)->cimetiere=cimetiere;
+    (* aff)->message=message;
+
 
     tracer_plateau((* aff));
 
     wrefresh(etat);
     wrefresh(cimetiere);
     wrefresh(plateau);
+
 
     for(int i = 0; i < 5; i++)
     {
@@ -207,9 +219,15 @@ maj_affichage(jeu_s jeu, aff_s aff)
         wclrtoeol(aff->etat);
     }
 
-    mvwprintw(aff->etat, winmaxy - 6, 2, "CHEVRES RESTANTES:");
+    mvwprintw(aff->etat, winmaxy - 6, 2, "CHEVRES VIVANTES:");
     wattron(aff->etat, A_BOLD);
-    wprintw(aff->etat, " %d", 25-jeu->participant[TIGRE].score);
+    wprintw(aff->etat, " %d", jeu->g->nb_chevre);
+    wattroff(aff->etat, A_BOLD);
+    wclrtoeol(aff->etat);
+
+    mvwprintw(aff->etat, winmaxy - 7, 2, "CHEVRES A PLACER:");
+    wattron(aff->etat, A_BOLD);
+    wprintw(aff->etat, " %d", NB_MAX_CHEVRE-jeu->participant[TIGRE].score-jeu->g->nb_chevre);
     wattroff(aff->etat, A_BOLD);
     wclrtoeol(aff->etat);
 
@@ -240,6 +258,9 @@ maj_affichage(jeu_s jeu, aff_s aff)
             }
         }
     }
+
+    mvwprintw(aff->cimetiere, 0, 2, "Appuyer sur 's' pour sauvegarder");
+    wrefresh(aff->cimetiere);
 }
 
 void retracer_case(aff_s aff, int y, int x, int p)
@@ -315,7 +336,7 @@ void jouer_ui(jeu_s jeu, aff_s aff)
     int erreur=0;
     int x, y;
 
-    while(!is_end(jeu) && erreur == 0)
+    while(!is_end(jeu))
     {
         maj_affichage(jeu, aff);
         if (jeu->participant[jeu->g->joueur].is_ai)
@@ -324,13 +345,22 @@ void jouer_ui(jeu_s jeu, aff_s aff)
             c = saisir_coups(jeu, aff);
         erreur = jouer(jeu, c);
 
-        if(erreur != 0 && jeu->participant[jeu->g->joueur].is_ai){
-            erreur = 0;
-        }
+
+    if(!erreur == 0)
+    {
+        //afficher_message(aff, "ERRUURE");
+        mvwprintw(aff->message, 0, 0, "%s", error[erreur-1]);
+        wclrtoeol(aff->message);
+        wrefresh(aff->message);
+    }
+    else
+    {
+        wmove(aff->message, 0, 0);
+        wclrtoeol(aff->message);
+        wrefresh(aff->message);
     }
 
-    
-    if(erreur == 0){
+    }
         clear();
         getmaxyx(stdscr, y, x);
         attron(A_BOLD | A_REVERSE); 
@@ -338,16 +368,25 @@ void jouer_ui(jeu_s jeu, aff_s aff)
         if (jeu->participant[TIGRE].score == 7)
             mvprintw((y/2), (x/2)-23, "Les tigres ont gagnés !");
         else
-            mvprintw((y/2), (x/2)-24, "Les chèvres ont gagnés !");
-
-    }else{
-        //printf("%s\n",error[erreur-1]);
-        mvwprintw(aff->etat, 8, 1, "erreur = %d, coup = %d %d || %d %d\n",erreur,c->source[ORD],c->source[ABS],c->destination[ORD],c->destination[ABS]);
-        wrefresh(aff->etat);
-    }
-    
+            mvprintw((y/2), (x/2)-24, "Les chèvres ont gagnés !");  
 
     getch();
+}
+
+void afficher_message(aff_s aff, char *mess)
+{
+    for (int i = 0; i < strlen(mess)+4; i++)
+        mvwaddch(aff->message, 0, i, ' ');
+    
+    mvwprintw(aff->message, 1, 0, '  ');
+    wprintw(aff->message, mess);
+    wprintw(aff->message, '  ');
+    wclrtoeol(aff->message);
+
+    for (int i = 0; i < strlen(mess)+4; i++)
+        mvwaddch(aff->message, 2, i, ' ');
+
+    wrefresh(aff->message);
 }
 
 void
@@ -459,18 +498,18 @@ saisir_coups(jeu_s jeu, aff_s aff)
 
     do
     {
-        wmove(aff->etat, 1, 2);
-        wclrtoeol(aff->etat);
-        wmove(aff->etat, 2, 2);
-        wclrtoeol(aff->etat);
-        wmove(aff->etat, 3, 2);
-        wclrtoeol(aff->etat);
         keypad(stdscr, TRUE);
         c = getch();
         if (c == KEY_MOUSE)
             if(getmouse(&event) == OK)
                 if(event.bstate & BUTTON1_CLICKED)
                 {
+                    wmove(aff->etat, 1, 2);
+                    wclrtoeol(aff->etat);
+                    wmove(aff->etat, 2, 2);
+                    wclrtoeol(aff->etat);
+                    wmove(aff->etat, 3, 2);
+                    wclrtoeol(aff->etat);
                     if (second_click)
                     {
 
@@ -547,6 +586,12 @@ saisir_coups(jeu_s jeu, aff_s aff)
                         }
                     }
                 }
+    if (c == 's')
+    {
+        sauvegarder(jeu);
+        mvwprintw(aff->cimetiere, 2, 2, "PARTIE SAUVEGARDER DANS save.txt");
+        wrefresh(aff->cimetiere);
+    }
     } while (!clics_sont_valides);
 
     coup->type=get_joueur(jeu);
