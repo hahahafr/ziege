@@ -324,6 +324,8 @@ void jouer_ui(jeu_s jeu, aff_s aff)
             c = saisir_coups(jeu, aff);
         erreur = jouer(jeu, c);
     }
+
+    
     if(erreur == 0){
         clear();
         getmaxyx(stdscr, y, x);
@@ -335,8 +337,8 @@ void jouer_ui(jeu_s jeu, aff_s aff)
             mvprintw((y/2), (x/2)-24, "Les chèvres ont gagnés !");
 
     }else{
-        mvwprintw(aff->etat, 8, 1, "erreur = %d, coup = %d %d || %d %d\n",erreur,c->source[ORD],c->source[ABS],c->destination[ORD],c->destination[ABS]);
-        mvwprintw(aff->etat, 9, 1, "test diagonale = %d\n",test_diagonale(c));
+        printf("%s\n",error[erreur-1]);
+        //mvwprintw(aff->etat, 8, 1, "erreur = %d, coup = %d %d || %d %d\n",erreur,c->source[ORD],c->source[ABS],c->destination[ORD],c->destination[ABS]);
         wrefresh(aff->etat);
     }
     

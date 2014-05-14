@@ -43,30 +43,6 @@ typedef struct et_coup_s {
 
 typedef t_coup_s * coup_s;
 
-//static const char * const error[] = {
-//    "Coup hors limite !\n",
-//    "Erreur, deplacement d'une case vide!\n",
-//    "Case prise!\n",
-//    "Deplacement des pions d'un adversaire, incorrect!(tricheur)\n",
-//    "On ne peut pas placer plus de tigre!\n",
-//    "Deplacement incorrect!\n",
-//    "Deplacement de tigre incorrect!\n",
-//    "Deplacement des chevres impossible tant qu'elles ne sont pas toute posées!\n",
-//    "Toute les chevres sont posées!\n",
-//    "Deplacement de chevre incorect!\n"
-//};
-
-//static const char * error = "Erreur!\n";
-
-#define FOREACH_FRUIT(FRUIT) \
-        FRUIT(apple)   \
-        FRUIT(orange)  \
-        FRUIT(grape)   \
-        FRUIT(banana)  \
-
-#define GENERATE_ENUM(ENUM) ENUM,
-#define GENERATE_STRING(STRING) #STRING,
-
 //enum FRUIT_ENUM {
 //    FOREACH_FRUIT(GENERATE_ENUM)
 //};
