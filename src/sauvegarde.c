@@ -12,6 +12,9 @@ void init_sauvegarde(sauvegarde * s){
 void ajout_historique(jeu_s j,sauvegarde s){
     jeu_s tmp;
 
+    if( j->participant[j->g->joueur].is_ai )
+        return;
+
     tmp = (jeu_s)malloc(sizeof(t_jeu));
 
     //Copie de la partie
@@ -45,12 +48,12 @@ void ajout_historique(jeu_s j,sauvegarde s){
     EMPILER(&(s->historique),tmp);
 }
 
-jeu_s revenir_arriere(jeu_s * j,sauvegarde s){
+jeu_s revenir_arriere(jeu_s j,sauvegarde s){
     jeu_s tmp;
 
     tmp = DEPILER(&(s->historique));
 
-    free(*j);
+    free(j);
 
     return(tmp);
 }
@@ -188,7 +191,7 @@ int chargement_fichier(jeu_s j, sauvegarde s){
 
 }
 
-int sauvegarder(jeu_s j)
+/*int sauvegarder(jeu_s j)
 {
     sauvegarde s;
     init_sauvegarde(&s);
@@ -201,4 +204,4 @@ int charger(jeu_s j)
     sauvegarde s;
     init_sauvegarde(&s);
     return(chargement_fichier(j,s));
-}
+}*/

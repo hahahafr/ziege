@@ -4,6 +4,7 @@
 #include "struct_jeu.h"
 #include "config.h"
 #include "logique.h"
+#include "sauvegarde.h"
 
 /******************************************************************/
 /*
@@ -68,5 +69,7 @@ int get_joueur(jeu_s j);
 int get_gagnant(jeu_s j);
 
 coup_s choix_coup_ai(jeu_s jeu);
+
+void sauvegarder(jeu_s j);
 
 #endif
