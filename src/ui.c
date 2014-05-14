@@ -87,30 +87,6 @@ init_affichage(jeu_s jeu, aff_s *aff)
         }
     }
 }
-/*
-void ui_redraw(jeu_s jeu, aff_s aff)
-{
-    int plateau_orig_y = (screeny-TAILLE_PLATEAU_H)/2;
-    int plateau_orig_x = (screenx-TAILLE_PLATEAU_L-TAILLE_ETAT_L)/2;
-
-    wrefresh(aff->etat);
-    wrefresh(aff->cimetiere);
-    wrefresh(aff->plateau);
-
-    for(int i = 0; i < 5; i++)
-    {
-        for(int j = 0; j < 5; j++)
-        {
-            // i = y
-            // j = x
-            aff->tabindcoord[i][j]=malloc(2*sizeof(int));
-            aff->tabindcoord[i][j][ORD]=2+plateau_orig_y+(6*i);
-            aff->tabindcoord[i][j][ABS]=4+plateau_orig_x+(10*j);
-        }
-    }
-    }
-}
-*/
 
 void tracer_plateau(aff_s aff)
 {
@@ -259,7 +235,10 @@ maj_affichage(jeu_s jeu, aff_s aff)
         }
     }
 
-    mvwprintw(aff->cimetiere, 0, 2, "Appuyer sur 's' pour sauvegarder");
+    mvwprintw(aff->cimetiere, 0, 2, "Pressez sur une touche:");
+    mvwprintw(aff->cimetiere, 1, 2, "[s] pour sauvegarder save.txt");
+    mvwprintw(aff->cimetiere, 2, 2, "[c] pour charger save.txt");
+    mvwprintw(aff->cimetiere, 3, 2, "[u] pour undo l'action précedente");
     wrefresh(aff->cimetiere);
 }
 
@@ -348,7 +327,10 @@ void jouer_ui(jeu_s jeu, aff_s aff)
 
     if(!erreur == 0)
     {
-        afficher_message(aff, error[erreur-1]);
+        char buf[256];
+        snprintf(buf, sizeof buf, "%s %d|%d -> %d|%d", error[erreur-1],
+          c->source[ORD], c->source[ABS], c->destination[ORD], c->destination[ABS]);
+        afficher_message(aff, buf);
     }
     else
     {
@@ -582,7 +564,7 @@ saisir_coups(jeu_s jeu, aff_s aff)
     if (c == 's')
     {
         sauvegarder(jeu);
-        mvwprintw(aff->cimetiere, 2, 2, "PARTIE SAUVEGARDER DANS save.txt");
+        afficher_message(aff->message, "Partie sauvegarder dans save.txt");
         wrefresh(aff->cimetiere);
     }
     } while (!clics_sont_valides);
