@@ -9,7 +9,7 @@ void test_ia(jeu_s j,sauvegarde s){
     maj_score_chevre(j);
     maj_score_tigre(j);
 
-    while(!is_end(j,c) && erreur == 0 && j->g->nb_chevre < NB_MAX_CHEVRE ){
+    while(!is_end(j) && erreur == 0 && j->g->nb_chevre < NB_MAX_CHEVRE ){
         if( get_joueur(j) == 0 )
             c = choix_placement_chevre(j);
         else
