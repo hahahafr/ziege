@@ -564,19 +564,19 @@ saisir_coups(jeu_s jeu, aff_s aff)
     if (c == 's')
     {
         sauvegarder(jeu);   
-        afficher_message(aff->message, "Partie sauvegarder dans save.txt");
+        afficher_message(aff, "Partie sauvegarder dans save.txt");
         wrefresh(aff->cimetiere);
     }
     else if (c == 'c')
     {
         charger(jeu);
-        afficher_message(aff->message, "Partie sauvegarder dans save.txt");
+        afficher_message(aff, "Partie sauvegarder dans save.txt");
         wrefresh(aff->cimetiere);
     }
     else if (c == 'u')
     {
         jeu=undo(jeu);
-        afficher_message(aff->message, "Partie sauvegarder dans save.txt");
+        afficher_message(aff, "Partie sauvegarder dans save.txt");
         wrefresh(aff->cimetiere);
     }
     } while (!clics_sont_valides);
