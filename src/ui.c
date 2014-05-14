@@ -564,7 +564,7 @@ saisir_coups(jeu_s jeu, aff_s aff)
     if (c == 's')
     {
         sauvegarder(jeu);
-        mvwprintw(aff->cimetiere, 2, 2, "PARTIE SAUVEGARDER DANS save.txt");
+        afficher_message(aff->message, "Partie sauvegarder dans save.txt");
         wrefresh(aff->cimetiere);
     }
     } while (!clics_sont_valides);
