@@ -180,7 +180,7 @@ int get_gagnant(jeu_s j){
 }
 
 void sauvegarder(jeu_s j){
-    sauvegarde_fichier(j,j->s);
+    sauvegarde_fichier(j,&(j->s));
 }
 
 void charger(jeu_s j){
