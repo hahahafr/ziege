@@ -183,9 +183,6 @@ int chargement_fichier(jeu_s j, sauvegarde s){
     else
         j->g->phase = PHASE_DEPLACEMENT;
 
-/*    mvwprintw(aff->cimetiere, 8, 2, "PHASE: %c\n", buffer[strlen(buffer)-3]);
-*/
-
     //Chargement du nombre de chèvre capturée
 
     fgets(buffer,100,f);
@@ -196,7 +193,6 @@ int chargement_fichier(jeu_s j, sauvegarde s){
         return(-1);
     }
 
-    mvprintw(20, 10, "CAP: %s\n", capture);
     fclose(f);
 
     return(0);
