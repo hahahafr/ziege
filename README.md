@@ -11,5 +11,5 @@ How to compile
 ==================
 
 - On Debian/Ubuntu:
-apt-get install libncurses5-dev libncurses5
-make
+`apt-get install libncurses5-dev libncurses5`
+`make`
