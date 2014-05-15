@@ -7,7 +7,9 @@ Bagh-Chal game in C
 - Computer vs Human possible with different level of difficulty
 
 
-Comment compiler ?
+How to compile
 ==================
 
+- On Debian/Ubuntu:
+apt-get install libncurses5-dev libncurses5
 make
