@@ -1,4 +1,5 @@
 #include "sauvegarde.h"
+#include "ui.h"
 
 void init_sauvegarde(sauvegarde * s){
 
@@ -134,18 +135,18 @@ int chargement_fichier(jeu_s j, sauvegarde s){
         for(int k=0;k<PLATEAU_LARGEUR;k++){
             trouve = false;
 
-            if( buffer[h] == '.' ){
+            if( buffer[k] == '.' ){
                  j->p->grille[i][k].pion = VIDE;
                  trouve=true;
             }
 
-            if( buffer[h] == 'T' ){
+            if( buffer[k] == 'T' ){
                 j->p->grille[i][k].pion = TIGRE;
                 trouve=true;
             }
 
 
-            if( buffer[h] == 'G' )
+            if( buffer[k] == 'G' )
                 j->p->grille[i][k].pion = CHEVRE;
                 trouve=true;
 
@@ -156,39 +157,46 @@ int chargement_fichier(jeu_s j, sauvegarde s){
 
     fgets(buffer,100,f);
     if( strcmp(buffer,"/endboard\n\0") != 0 ){
-        printf("player\n");
         return(-1);
     }
 
     //Chargement du joueur
     fgets(buffer,100,f);
 
-    if( strcmp(buffer,"/player G\n\0") != 0 && strcmp(buffer,"/player T\n\0") != 0 ){
-        printf("player\n");
+    if( strcmp(buffer,"/player G\n\0") != 0 || strcmp(buffer,"/player T\n\0") != 0 ){
         return(-1);
     }
-
-    j->g->joueur = buffer[strlen(buffer)-2];
+    if (buffer[strlen(buffer)-3] == 'T')
+        j->g->joueur = TIGRE;
+    else
+        j->g->joueur = CHEVRE;
 
     //Chargement de la phase
 
     fgets(buffer,100,f);
 
-    if( strcmp(buffer,"/phase 0\n\0") != 0 && strcmp(buffer,"/phase 1\n\0") != 0){
-        printf("phase\n");
+    if( strcmp(buffer,"/phase 0\n\0") != 0 || strcmp(buffer,"/phase 1\n\0") != 0){
         return(-1);
     }
+    if (buffer[strlen(buffer)-3] == '0')
+        j->g->phase = PHASE_PLACEMENT;
+    else
+        j->g->phase = PHASE_DEPLACEMENT;
+
+/*    mvwprintw(aff->cimetiere, 8, 2, "PHASE: %c\n", buffer[strlen(buffer)-3]);
+*/
 
     //Chargement du nombre de chèvre capturée
 
     fgets(buffer,100,f);
 
-    capture = &(buffer[strlen("/captured ")-1]);
+    capture = &(buffer[strlen("/captured ")]);
 
     if( (j->participant[TIGRE].score = atoi(capture)) == -1){
         return(-1);
     }
 
+    mvprintw(20, 10, "CAP: %s\n", capture);
     fclose(f);
 
     return(0);

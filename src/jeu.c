@@ -184,7 +184,7 @@ void sauvegarder(jeu_s j){
 }
 
 void charger(jeu_s j){
-    chargement_fichier(&j,j->s);
+    chargement_fichier(j,j->s);
     init_sauvegarde(&(j->s));
 }
 

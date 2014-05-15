@@ -195,17 +195,12 @@ maj_affichage(jeu_s jeu, aff_s aff)
         wclrtoeol(aff->etat);
     }
 
-    mvwprintw(aff->etat, winmaxy - 6, 2, "CHEVRES VIVANTES:");
+    mvwprintw(aff->etat, winmaxy - 6, 2, "CHEVRES A PLACER:");
     wattron(aff->etat, A_BOLD);
-    wprintw(aff->etat, " %d", jeu->g->nb_chevre);
+    wprintw(aff->etat, " %d", NB_MAX_CHEVRE-jeu->g->nb_chevre);
     wattroff(aff->etat, A_BOLD);
     wclrtoeol(aff->etat);
-
-    mvwprintw(aff->etat, winmaxy - 7, 2, "CHEVRES A PLACER:");
-    wattron(aff->etat, A_BOLD);
-    wprintw(aff->etat, " %d", NB_MAX_CHEVRE-jeu->participant[TIGRE].score-jeu->g->nb_chevre);
-    wattroff(aff->etat, A_BOLD);
-    wclrtoeol(aff->etat);
+    wrefresh(aff->etat);
 
 
     // i = ORD = x
@@ -565,19 +560,18 @@ saisir_coups(jeu_s jeu, aff_s aff)
     {
         sauvegarder(jeu);   
         afficher_message(aff, "Partie sauvegarder dans save.txt");
-        wrefresh(aff->cimetiere);
     }
     else if (c == 'c')
     {
         charger(jeu);
-        afficher_message(aff, "Partie sauvegarder dans save.txt");
-        wrefresh(aff->cimetiere);
+        maj_affichage(jeu, aff);
+        afficher_message(aff, "Partie save.txt chargé");
     }
     else if (c == 'u')
     {
-        jeu=undo(jeu);
-        afficher_message(aff, "Partie sauvegarder dans save.txt");
-        wrefresh(aff->cimetiere);
+        jeu = undo(jeu);
+        maj_affichage(jeu, aff);
+        afficher_message(aff, "Action précedente annulée");
     }
     } while (!clics_sont_valides);
 
